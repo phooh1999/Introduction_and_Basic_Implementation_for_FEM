@@ -1,2 +1,5 @@
 # 忽略用于 Debug 的矩阵数据
 *.mat
+
+# 忽略解压的 reference solution code
+*solution_code/
