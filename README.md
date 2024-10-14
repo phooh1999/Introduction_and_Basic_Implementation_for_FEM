@@ -3,7 +3,15 @@
 - 何晓明老师 [MISSOURI S&T Dr.Xiaoming He](https://sites.mst.edu/xiaominghe/)
 - [课程录播](https://www.bilibili.com/video/BV1Zv411t7Lj/)
 
+**课程主要目标**  
+1. 讲解有限元算法通用结构以及相应的基本有限元程序的通用结构；
+2. 从零开始逐步写出自己的通用结构有限元程序包（而不是理解和使用某个已有程序包）；
+3. 从而掌握给各类方程独立写基本有限元通用结构程序的方法；
+4. 具备向功能更强大结构更复杂的有限元程序包扩展的能力。
+
 # Course Q&A
+（下面的这些链接好像都访问受限了...）
+
 0. [对这门课的一些进一步解释](https://shimo.im/docs/3grh3gkqD6h39xkh/)
 1. [关于课件中格式推导和解释的问题](https://shimo.im/docs/yPgytPVYJkTPKW66/)
 2. [关于课件中伪代码，模块化，和参数化的问题](https://shimo.im/docs/39XQycqHwr6G66X8/) 
