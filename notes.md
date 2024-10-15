@@ -426,7 +426,6 @@ $$
 
 ## 3.4 Measurements for errors
 
-
 - $L^{\infty}$ norm error: $\left\| u-u_h \right\| _{\infty}=\underset{\left( x,y \right) \in {\Omega}}{\mathrm{sup}}\left| u\left( x,y \right)-u_h\left( x,y \right) \right|\,$
 - $L^2$ norm error: $\left\| u-u_h \right\| _0=\sqrt{\int_{\Omega}{\left( u-u_h \right) ^2\mathrm{d}x}}$
 - $H^1$ semi-norm error: $\left| u-u_h \right|_1=\sqrt{\int_{\Omega}{\left( \frac{\partial \left( u-u_h \right)}{\partial x} \right) ^2\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\left( \frac{\partial \left( u-u_h \right)}{\partial y} \right) ^2\mathrm{d}x\mathrm{d}y}}$
@@ -514,6 +513,12 @@ $$
 
 这里需要强调一点，边界边信息和边界节点信息分属于不同类别，边界边为网格概念，边界节点为有限元概念。我在上一章的作业中混淆了这两个概念，刚好后面何老师在答疑课中也讲了这个问题，具体链接如下，时间大约在36:39
 [有限元基础编程课程答疑-何晓明-2021-1-07](https://www.bilibili.com/video/BV1ET4y1N77h/?share_source=copy_web&vd_source=4846b273dd993443973d15943a9b6546)
+
+### `boundaryNodes` and `boundaryEdges`
+
+- `boundaryNodes` 存边界信息，所有边界上的有限元节点
+- `boundaryEdges` 存边界信息，这条边所在的有限元单元索引，以及边上的两个顶点（网格点）用来确定边的位置
+> 感觉这里可以设计更好的数据结构，在复习重构的时候考虑一下这个问题
 
 # Chapter 4: Finite Elements for 2D second order parabolic and hyperbolic equation
 
@@ -708,10 +713,13 @@ $$
 
 重新把之前的视频、实现代码、学习记录看一遍，然后总结、重构自己的程序，再开始推进下一阶段的学习。
 - ref -> local -> global 仿射变换通用处理
-- 边界条件程序化处理，需要更多的信息！！！
+- 边界条件程序化处理，如何设计边界边、边界点的数据结构
 - 误差计算程序
 - 注意 Slides 中明显的重要模块、计算公式！！！
-- 三角形单元和四边形单元实现，线性和二次单元
+- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
+- 目前是多次调用组装函数，是否可以在一次单元遍历中完成所有组装
+	- 可以写单元组装函数，然后在单元遍历中调用单元组装函数
+- matlab向量化处理方法？
 
 # Chapter 6: 
 
