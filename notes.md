@@ -689,7 +689,7 @@ A_5=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_1}\frac{\partial \phi _
 A_7=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2},    \quad A_8=\int_{\Omega}{\lambda \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \end{align}
 $$
-写为，也就是说，只需要多次调用矩阵组装的子程序，最后排成大矩阵求解即可
+写为
 $$
 \left( \begin{matrix}
 	A_1+2A_2+A_3&		A_4+A_5\\
@@ -702,6 +702,7 @@ $$
 	b_2\\
 \end{array} \right) 
 $$
+也就是说，只需要多次调用矩阵组装的子程序，最后排成大矩阵求解即可
 
 # 学习小结
 
