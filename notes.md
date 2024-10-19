@@ -704,6 +704,38 @@ $$
 $$
 也就是说，只需要多次调用矩阵组装的子程序，最后排成大矩阵求解即可
 
+## 5.2 Stress boundary condition
+
+$$
+\begin{cases}
+	-\nabla \cdot \mathbf{\sigma }\left( \boldsymbol{u} \right) =\boldsymbol{f}\,\,   \mathrm{in}\ \Omega\\
+	\sigma (\boldsymbol{u}) \boldsymbol{n}=\boldsymbol{p}\,\, \mathrm{on}\ \partial\Omega\\
+\end{cases}
+$$
+根据之前得到的公式
+$$
+\int_{\Omega}{\mathbf{\sigma }\left( \boldsymbol{u} \right): \nabla \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}-\int_{\partial \Omega}{\left( \mathbf{\sigma }\left( \boldsymbol{u} \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}
+$$
+可以直接将边界条件代入
+$$
+\int_{\Omega}{\mathbf{\sigma }\left( \boldsymbol{u} \right): \nabla \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}-\int_{\partial \Omega}{\boldsymbol{p} \cdot \boldsymbol{v}\,\,\mathrm{d}s}
+=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}
+$$
+注意在这种边界条件下解不唯一，需要加入 Dirichlet 边界条件，因此考虑下面的混合边界条件
+$$
+\begin{cases}
+	-\nabla \cdot \mathbf{\sigma }\left( \boldsymbol{u} \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\sigma (\boldsymbol{u})\boldsymbol{n}=\boldsymbol{p}\, \, \mathrm{on}\ \Gamma _S\subset \partial \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \Gamma _D=\partial \Omega /\Gamma _S\\
+\end{cases}
+$$
+其中 $\boldsymbol{n}=(n_1,n_2)^T$ 是 $\Gamma_S$ 的单位外法线向量
+// TODO!!!
+
+## 5.3 Robin boundary conditions
+
+// TODO!!!
+
 # 学习小结
 
 在最简单的一维问题中打好基础，理解好有限元通用结构后，后续的通用程序大部分部分基本不变，每次只需要做少量的修改。然后逐渐向不同的有限元、不同的边界条件、二维三维、非稳态、非线性情况去拓展自己写出来的程序包。
@@ -713,15 +745,30 @@ $$
 ## Review
 
 重新把之前的视频、实现代码、学习记录看一遍，然后总结、重构自己的程序，再开始推进下一阶段的学习。
-- ref -> local -> global 仿射变换通用处理
-- 边界条件程序化处理，如何设计边界边、边界点的数据结构，以及边界顶点重合时怎么取条件
-- 误差计算程序
-- 注意 Slides 中明显的重要模块、计算公式！！！
-- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
-- 目前是多次调用组装函数，是否可以在一次单元遍历中完成所有组装
-	- 可以写单元组装函数，然后在单元遍历中调用单元组装函数
-- matlab向量化处理方法？
-- 求解器调用组装器，组装器调用高斯积分，高斯积分调用基函数库，其中调用高斯积分的流程是否可以重新组织？
+- 基本任务
+	- ref -> local -> global 仿射变换通用处理
+	- 误差计算程序
+	- 尝试在 matlab 中使用面向对象写法
+	- 求解器调用组装器，组装器调用高斯积分，高斯积分调用基函数库，其中调用高斯积分的流程是否可以重新组织？
+	- matlab向量化处理方法？
+	- 目前是多次调用组装函数，是否可以在一次单元遍历中完成所有组装（可以写单元组装函数，然后在单元遍历中调用单元组装函数）
+	- 注意 Slides 中明显的重要模块、计算公式！！！模块化处理
+	- 边界条件程序化处理，如何设计边界边、边界点的数据结构，以及边界顶点重合时怎么取条件（这些根据当前程序逐渐修改完善提升）
+- 小课题
+	- Crouzeix-Raviart 单元
+	- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
+	- 更加复杂的边界条件的处理，如stress condition的法向、切向写法等等
+- 当前任务
+	- 完成第五章程序基本内容重构，和算例结果对上
+	- 完成第六、七、八、九章基本内容，和算例结果对上
+	- 拓展内容听课同时把笔记记好
+	- 补全所有的拓展内容，整理课程笔记
+	- 开始实现拓展内容
 
-# Chapter 6: 
+# Chapter 6: Finite elements for 2D steady Stokes equation
 
+# Chapter 7: Finite elements for 2D steady Navier-Stokes equation
+
+# Chapter 8: Finite elements for 2D unsteady Stokes and linear elasticity equations
+
+# Chapter 9: Finite elements for 2D unsteady Navier-Stokes equations
