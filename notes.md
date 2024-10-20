@@ -20,8 +20,10 @@ Solve
 $$
 \begin{gather}
 -\frac{\mathrm{d}}{\mathrm{d}x}\left( c\left( x \right) \frac{\mathrm{d}u\left( x \right)}{\mathrm{d}x} \right) =f\left( x \right) ,\ a<x<b
+\nonumber
 \\
 u\left( a \right) =g_a, \  u\left( b \right) =g_b
+\nonumber
 \end{gather} 
 $$
 for $u(x)$
@@ -44,8 +46,10 @@ $$
 $$
 \begin{gather}
 x_i=a+\left( i-1 \right) h\,\, \left( i=1,\cdots ,N+1 \right) 
+\nonumber
 \\
 E_n=\left[ x_n,x_{n+1} \right] \,\,\left( n=1,\cdots ,N \right) 
+\nonumber
 \end{gather}
 $$
 使用分片线性函数
@@ -56,8 +60,10 @@ $$
 $$
 \begin{gather}
 \int_a^b{cu^\prime_h v^\prime_h\mathrm{d}x=\int_a^b{fv_h\mathrm{d}x}}
+\nonumber
 \\
 u_h=\sum_{j=1}^{N+1}{u_j\phi _j}
+\nonumber
 \end{gather}
 $$
 将test function选为同样的分片线性函数 $v_h=\phi_i \  \left( i=1,\cdots,N+1 \right)$ 
@@ -65,13 +71,13 @@ $$
 
 
 $$
-\begin{align}
+\begin{aligned}
 &\int_a^b{c\left( \sum_{j=1}^{N+1}{u_j\phi _j} \right) ^{\prime}\phi _{i}^{\prime}\mathrm{d}x=\int_a^b{f\phi _{i}\mathrm{d}x}}
 ,\quad i=1,\cdots,N+1
 \\
 \Rightarrow &\sum_{j=1}^{N+1}{\left[ \int_a^b{c\phi _{j}^{\prime}\phi _{i}^{\prime}\mathrm{d}x} \right]u_j}=\int_a^b{f\phi _{i}\mathrm{d}x}
 ,\quad i=1,\cdots,N+1
-\end{align}
+\end{aligned}
 $$
 所以
 $$
@@ -82,16 +88,20 @@ $$
 $$
 \begin{gather}
 A_{ij}=\int_a^b{c\phi _{j}^{\prime}\phi _{i}^{\prime}\mathrm{d}x}
+\nonumber
 \\
 b_i=\int_a^b{f\phi _{i}\mathrm{d}x}
+\nonumber
 \end{gather}
 $$
 ### Assembly
 $$
 \begin{gather}
 A_{ij}=\int_a^b{c\phi _{j}^{\prime}\phi _{i}^{\prime}\mathrm{d}x}=\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{c\psi _{nj}^{\prime}\psi _{ni}^{\prime}\mathrm{d}x}},i,j=1,\cdots ,N+1
+\nonumber
 \\
 b_i=\int_a^b{f\phi _i\mathrm{d}x}=\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{f\psi _{ni}\mathrm{d}x}},i,j=1,\cdots ,N+1
+\nonumber
 \end{gather}
 $$
 ## 1.3 Boundary treatment
@@ -170,8 +180,10 @@ end
 $$
 \begin{gather}
 \psi \left( x \right) =\hat{\psi}\left( \hat{x} \right) 
+\nonumber
 \\
 \frac{\mathrm{d}\psi _{nj}\left( x \right)}{\mathrm{d}x}=\frac{\mathrm{d}\hat{\psi}_j\left( \hat{x} \right)}{\mathrm{d}\hat{x}}\frac{\mathrm{d}\hat{x}}{\mathrm{d}x}
+\nonumber
 \end{gather}
 $$
 
@@ -181,8 +193,10 @@ $$
 $$
 \begin{gather}
 -\frac{\mathrm{d}}{\mathrm{d}x}\left( c\left( x \right) \frac{\mathrm{d}u\left( x \right)}{\mathrm{d}x} \right) =f\left( x \right) , a<x<b
+\nonumber
 \\
 u^{\prime}\left( a \right) =r_a, u\left( b \right) =g_b
+\nonumber
 \end{gather}
 $$
 Hence
@@ -195,8 +209,10 @@ $$
 $$
 \begin{gather}
 -\frac{\mathrm{d}}{\mathrm{d}x}\left( c\left( x \right) \frac{\mathrm{d}u\left( x \right)}{\mathrm{d}x} \right) =f\left( x \right) ,a<x<b
+\nonumber
 \\
 u\left( a \right) =g_a,u^{\prime}\left( b \right) +q_bu\left( b \right) =p_b
+\nonumber
 \end{gather}
 $$
 Hence
@@ -213,16 +229,16 @@ $$
 
 By using $u_h=\sum_{j=1}^{N_b}{u_j\phi _j}$ 
 $$
-\begin{align}
+\begin{aligned}
 \left\| u-u_h \right\| _{\infty}&=\underset{1\le n\le N}{\max}\underset{x_n\le x\le x_{n+1}}{\max}\left| u\left( x \right) -u_h\left( x \right) \right|
 \\
 &=\,\underset{1\le n\le N}{\max}\underset{x_n\le x\le x_{n+1}}{\max}\left| u\left( x \right) -\sum_{j=1}^{N_b}{u_j\phi _j\left( x \right)} \right|
 \\
 &=\underset{1\le n\le N}{\max}\underset{x_n\le x\le x_{n+1}}{\max}\left| u\left( x \right) -\sum_{k=1}^{N_{lb}}{u_{T_b\left( k,n \right)}\psi _{nk}\left( x \right)} \right|
-\end{align}
+\end{aligned}
 $$
 $$
-\begin{align}
+\begin{aligned}
 \left\| u-u_h \right\| _0&=\sqrt{\int_I{\left( u-u_h \right) ^2\mathrm{d}x}}
 \\
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u-u_h \right) ^2\mathrm{d}x}}}
@@ -230,14 +246,14 @@ $$
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u-\sum_{j=1}^{N_b}{u_j\phi _j} \right) ^2\mathrm{d}x}}}
 \\
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u-\sum_{k=1}^{N_{lb}}{u_{T_b\left( k,n \right)}\psi _{nk}} \right) ^2\mathrm{d}x}}}
-\end{align}
+\end{aligned}
 $$
 $$
-\begin{align}
+\begin{aligned}
 \left| u-u_h \right|_1&=\sqrt{\int_I{\left( u^{\prime}-u_{h}^{\prime} \right) ^2\mathrm{d}x}}
 \\
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u^{\prime}-\sum_{k=1}^{N_{lb}}{u_{T_b\left( k,n \right)}\psi _{nk}^{\prime}} \right) ^2\mathrm{d}x}}}
-\end{align}
+\end{aligned}
 $$
 可以发现，误差计算的关键在于计算下列公式的子程序
 $$
@@ -282,26 +298,26 @@ J=\left( \begin{matrix}
 \end{matrix} \right) 
 $$
 $$
-\begin{align}
+\begin{aligned}
 \hat{x}&=\frac{\left( y_3-y_1 \right) \left( x-x_1 \right) -\left( x_3-x_1 \right) \left( y-y_1 \right)}{\left| J \right|}
 \\
 \hat{y}&=\frac{-\left( y_2-y_1 \right) \left( x-x_1 \right) +\left( x_2-x_1 \right) \left( y-y_1 \right)}{\left| J \right|}
-\end{align}
+\end{aligned}
 $$
 这样可以使用参考基函数
 线性基函数
 $$
-\begin{align}
+\begin{aligned}
 \hat{\psi}_1\left( \hat{x},\hat{y} \right) &=-\hat{x}-\hat{y}+1
 \\
 \hat{\psi}_2\left( \hat{x},\hat{y} \right) &=\hat{x}
 \\
 \hat{\psi}_3\left( \hat{x},\hat{y} \right) &=\hat{y}
-\end{align}
+\end{aligned}
 $$
 二阶基函数
 $$
-\begin{align}
+\begin{aligned}
 \hat{\psi}_1\left( \hat{x},\hat{y} \right) &=2\hat{x}^2+2\hat{y}^2+4\hat{x}\hat{y}-3\hat{x}-3\hat{y}+1
 \\
 \hat{\psi}_2\left( \hat{x},\hat{y} \right) &=2\hat{x}^2-\hat{x}
@@ -313,11 +329,11 @@ $$
 \hat{\psi}_5\left( \hat{x},\hat{y} \right) &=4\hat{x}\hat{y}
 \\
 \hat{\psi}_6\left( \hat{x},\hat{y} \right) &=-4\hat{y}^2-4\hat{x}\hat{y}+4\hat{y}
-\end{align}
+\end{aligned}
 $$
 采用链式求导法则
 $$
-\begin{align}
+\begin{aligned}
 \frac{\partial \psi _i}{\partial x}=&\frac{\partial \hat{\psi}_i}{\partial \hat{x}}\frac{y_3-y_1}{\left| J \right|}+\frac{\partial \hat{\psi}_i}{\partial \hat{y}}\frac{y_1-y_2}{\left| J \right|}
 \\
 \frac{\partial \psi _i}{\partial y}=&\frac{\partial \hat{\psi}_i}{\partial \hat{x}}\frac{x_1-x_3}{\left| J \right|}+\frac{\partial \hat{\psi}_i}{\partial \hat{y}}\frac{x_2-x_1}{\left| J \right|}
@@ -329,7 +345,7 @@ $$
 \frac{\partial ^2\psi _i}{\partial x\partial y}=&\frac{\partial ^2\hat{\psi}_i}{\partial \hat{x}^2}\frac{\left( x_1-x_3 \right) \left( y_3-y_1 \right)}{\left| J \right|^2}+\frac{\partial ^2\hat{\psi}_i}{\partial \hat{x}\partial \hat{y}}\frac{\left( x_1-x_3 \right) \left( y_1-y_2 \right)}{\left| J \right|^2}
 \\
 &+\frac{\partial ^2\hat{\psi}_i}{\partial \hat{x}\partial \hat{y}}\frac{\left( x_2-x_1 \right) \left( y_3-y_1 \right)}{\left| J \right|^2}+\frac{\partial ^2\hat{\psi}_i}{\partial \hat{y}^2}\frac{\left( x_2-x_1 \right) \left( y_1-y_2 \right)}{\left| J \right|^2}
-\end{align}
+\end{aligned}
 $$
 
 ## 作业思考
@@ -348,19 +364,19 @@ Pb(:,Tb(:,n));
 
 考虑二阶椭圆问题
 $$
-\begin{align}
-&-\nabla \cdot \left( c\nabla u \right) =f, \ \mathrm{in} \ \Omega 
+\begin{aligned}
+-\nabla \cdot \left( c\nabla u \right) &=f, \ \mathrm{in} \ \Omega 
 \\
-&u=g,\ \mathrm{on} \  \partial \Omega 
-\end{align}
+u&=g,\ \mathrm{on} \  \partial \Omega 
+\end{aligned}
 $$
 其中梯度和散度为
 $$
-\begin{align}
-&\nabla u=\left( u_x,u_y \right) 
+\begin{aligned}
+\nabla u &= \left( u_x,u_y \right) 
 \\
-&\nabla \cdot \vec{v}=\frac{\partial v_1}{\partial x}+\frac{\partial v_2}{\partial y}
-\end{align}
+\nabla \cdot \vec{v} &=\frac{\partial v_1}{\partial x}+\frac{\partial v_2}{\partial y}
+\end{aligned}
 $$
 两边同时乘以测试函数
 $$
@@ -398,11 +414,11 @@ $$
 $$
 和第一章类似有
 $$
-\begin{align}
+\begin{aligned}
 A_{ij}&=\int_{\Omega}{c\nabla \phi _j\cdot \nabla \phi _i\mathrm{d}x\mathrm{d}y}
 \\
 b_i&=\int_{\Omega}{f\phi _i\mathrm{d}x\mathrm{d}y}
-\end{align}
+\end{aligned}
 $$
 最后求解线性代数方程组
 $$
@@ -429,6 +445,7 @@ $$
 - $L^{\infty}$ norm error: $\left\| u-u_h \right\| _{\infty}=\underset{\left( x,y \right) \in {\Omega}}{\mathrm{sup}}\left| u\left( x,y \right)-u_h\left( x,y \right) \right|\,$
 - $L^2$ norm error: $\left\| u-u_h \right\| _0=\sqrt{\int_{\Omega}{\left( u-u_h \right) ^2\mathrm{d}x}}$
 - $H^1$ semi-norm error: $\left| u-u_h \right|_1=\sqrt{\int_{\Omega}{\left( \frac{\partial \left( u-u_h \right)}{\partial x} \right) ^2\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\left( \frac{\partial \left( u-u_h \right)}{\partial y} \right) ^2\mathrm{d}x\mathrm{d}y}}$
+
 具体计算公式如下
 $$
 \begin{aligned}
@@ -438,7 +455,7 @@ $$
 \end{aligned}
 $$
 $$
-\begin{align}
+\begin{aligned}
 \left\| u-u_h \right\| _0&=\sqrt{\int_I{\left( u-u_h \right) ^2\mathrm{d}x}}
 \\
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u-u_h \right) ^2\mathrm{d}x}}}
@@ -446,14 +463,14 @@ $$
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u-\sum_{j=1}^{N_b}{u_j\phi _j} \right) ^2\mathrm{d}x}}}
 \\
 &=\sqrt{\sum_{n=1}^N{\int_{x_n}^{x_{n+1}}{\left( u-\sum_{k=1}^{N_{lb}}{u_{T_b\left( k,n \right)}\psi _{nk}} \right) ^2\mathrm{d}x}}}
-\end{align}
+\end{aligned}
 $$
 $$
-\begin{align}
+\begin{aligned}
 \left| u-u_h \right|_{1}^{2}=&\sum_{n=1}^N{\int_{E_n}{\left( \frac{\partial u}{\partial x}-\sum_{k=1}^{N_{lb}}{u_{T_b\left( k,n \right)}\frac{\partial \psi _{nk}}{\partial x}} \right) ^2\mathrm{d}x\mathrm{d}y}}
 \\
 &+\sum_{n=1}^N{\int_{E_n}{\left( \frac{\partial u}{\partial y}-\sum_{k=1}^{N_{lb}}{u_{T_b\left( k,n \right)}\frac{\partial \psi _{nk}}{\partial y}} \right) ^2\mathrm{d}x\mathrm{d}y}}
-\end{align}
+\end{aligned}
 $$
 
 ## 3.5 More Discussion
@@ -461,11 +478,11 @@ $$
 ### 3.5.1 Neumann boundary conditions
 
 $$
-\begin{align}
+\begin{aligned}
 \int_{\partial \Omega}{\left( c\nabla u\cdot \vec{n} \right) v\mathrm{d}s}&=\int_{\Gamma _N}{\left( c\nabla u\cdot \vec{n} \right) v\mathrm{d}s}+\int_{\partial \Omega /\Gamma _N}{\left( c\nabla u\cdot \vec{n} \right) v\mathrm{d}s}
 \\
 &=\int_{\Gamma _N}{cpv\mathrm{d}s}
-\end{align}
+\end{aligned}
 $$
 离散后的有限元格式为
 $$
@@ -511,8 +528,7 @@ $$
 \int_{En}{c\frac{\partial ^{r+s}\psi _{n\alpha}}{\partial x^r\partial y^s}\frac{\partial ^{p+q}\psi _{n\beta}}{\partial x^p\partial y^q}\mathrm{d}x\mathrm{d}y}
 $$
 
-这里需要强调一点，边界边信息和边界节点信息分属于不同类别，边界边为网格概念，边界节点为有限元概念。我在上一章的作业中混淆了这两个概念，刚好后面何老师在答疑课中也讲了这个问题，具体链接如下，时间大约在36:39
-[有限元基础编程课程答疑-何晓明-2021-1-07](https://www.bilibili.com/video/BV1ET4y1N77h/?share_source=copy_web&vd_source=4846b273dd993443973d15943a9b6546)
+这里需要强调一点，边界边信息和边界节点信息分属于不同类别，边界边为网格概念，边界节点为有限元概念。我在上一章的作业中混淆了这两个概念，刚好后面何老师在答疑课中也讲了这个问题，具体链接如下，时间大约在36:39[有限元基础编程课程答疑-何晓明-2021-1-07](https://www.bilibili.com/video/BV1ET4y1N77h/?share_source=copy_web&vd_source=4846b273dd993443973d15943a9b6546)
 
 ### `boundaryNodes` and `boundaryEdges`
 
@@ -526,13 +542,13 @@ $$
 
 Cosider the 2D second order parabolic equation
 $$
-\begin{align}
+\begin{aligned}
 &u_t-\nabla \cdot \left( c\nabla u \right) =f, \  \mathrm{in} \ \Omega \times \left[ 0,T \right] 
 \\
 &u=g,\ \mathrm{on}\ \partial \Omega \times \left[ 0,T \right] 
 \\
 &u=u_0,\ \mathrm{at}\ t=0\ \mathrm{and}\ \mathrm{in}\ \Omega 
-\end{align}
+\end{aligned}
 $$
 首先右乘测试函数并积分
 $$
@@ -574,19 +590,19 @@ $$
 $$
 其中
 $$
-\begin{align}
+\begin{aligned}
 \tilde{A}_{m+1}&=\frac{M}{\Delta t}+\theta A\left( t_{m+1} \right) 
 \\
 \tilde{b}_{m+1}&=\theta b\left( t_{m+1} \right) +\left( 1-\theta \right) b\left( t_m \right) +\left( \frac{M}{\Delta t}-\left( 1-\theta \right) A\left( t_m \right) \right) u_m
-\end{align}
+\end{aligned}
 $$
 简单起见，考虑LTI系统
 $$
-\begin{align}
+\begin{aligned}
 \tilde{A}&=\frac{M}{\Delta t}+\theta A
 \\
 \tilde{b}_{m+1}&=\theta b\left( t_{m+1} \right) +\left( 1-\theta \right) b\left( t_m \right) +\left[ \frac{M}{\Delta t}-\left( 1-\theta \right) A \right] u_m
-\end{align}
+\end{aligned}
 $$
 
 # Chapter 5: Finite elements for 2D steady linear elasticity equation
@@ -635,7 +651,7 @@ $$
 $$
 考虑Dirichlet边界条件，写成标量形式
 $$
-\begin{align}
+\begin{aligned}
 &\int_{\Omega}{ ( \lambda \frac{\partial u_1}{\partial x_1}\frac{\partial v_1}{\partial x_1}+2\mu \frac{\partial u_1}{\partial x_1}\frac{\partial v_1}{\partial x_1}+\lambda \frac{\partial u_2}{\partial x_2}\frac{\partial v_1}{\partial x_1}\,\,}
 \\
 &+\mu \frac{\partial u_1}{\partial x_2}\frac{\partial v_1}{\partial x_2}+\mu \frac{\partial u_2}{\partial x_1}\frac{\partial v_1}{\partial x_2}+\mu \frac{\partial u_1}{\partial x_2}\frac{\partial v_2}{\partial x_1}+\mu \frac{\partial u_2}{\partial x_1}\frac{\partial v_2}{\partial x_1}
@@ -643,7 +659,7 @@ $$
 &+\lambda \frac{\partial u_1}{\partial x_1}\frac{\partial v_2}{\partial x_2}+\lambda \frac{\partial u_2}{\partial x_2}\frac{\partial v_2}{\partial x_2}+2\mu \frac{\partial u_2}{\partial x_2}\frac{\partial v_2}{\partial x_2}  )\,\,\mathrm{d}x_1\mathrm{d}x_2
 \\
 =&\int_{\Omega}{\left( f_1v_1+f_2v_2 \right) \,\, \mathrm{d}x_1\mathrm{d}x_2}
-\end{align}
+\end{aligned}
 $$
 有限元空间逼近
 $$
@@ -655,7 +671,7 @@ u_{1h}=\sum_{j=1}^{N_b}{u_{1j}\phi _j},   u_{2h}=\sum_{j=1}^{N_b}{u_{2j}\phi _j}
 $$
 可以看到，未知数为原来的两倍，因此需要更多的测试函数。首先取 $\boldsymbol{v}_h=\left( \phi _i,0 \right) ^T$ 
 $$
-\begin{align}
+\begin{aligned}
 &\int_{\Omega}{\lambda \left( \sum_{j=1}^{N_b}{u_{1j}\frac{\partial \phi _j}{\partial x_1}} \right) \frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}+2\int_{\Omega}{\mu \left( \sum_{j=1}^{N_b}{u_{1j}\frac{\partial \phi _j}{\partial x_1}} \right) \frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \\
 &+\int_{\Omega}{\lambda \left( \sum_{j=1}^{N_b}{u_{2j}\frac{\partial \phi _j}{\partial x_2}} \right) \frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}
@@ -663,11 +679,11 @@ $$
 &+\int_{\Omega}{\mu \left( \sum_{j=1}^{N_b}{u_{1j}\frac{\partial \phi _j}{\partial x_2}} \right) \frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Omega}{\mu \left( \sum_{j=1}^{N_b}{u_{2j}\frac{\partial \phi _j}{\partial x_1}} \right) \frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \\
 &=\int_{\Omega}{f_1\phi _i\,\,\mathrm{d}x_1\mathrm{d}x_2}
-\end{align}
+\end{aligned}
 $$
 再取 $\boldsymbol{v}_h=\left( 0,\phi _i \right) ^T$ 
 $$
-\begin{align}
+\begin{aligned}
 &\int_{\Omega}{\mu \left( \sum_{j=1}^{N_b}{u_{1j}\frac{\partial \phi _j}{\partial x_2}} \right) \frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Omega}{\mu \left( \sum_{j=1}^{N_b}{u_{2j}\frac{\partial \phi _j}{\partial x_1}} \right) \frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \\
 &+\int_{\Omega}{\lambda \left( \sum_{j=1}^{N_b}{u_{1j}\frac{\partial \phi _j}{\partial x_1}} \right) \frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}
@@ -675,11 +691,11 @@ $$
 &+\int_{\Omega}{\lambda \left( \sum_{j=1}^{N_b}{u_{2j}\frac{\partial \phi _j}{\partial x_2}} \right) \frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}+2\int_{\Omega}{\mu \left( \sum_{j=1}^{N_b}{u_{2j}\frac{\partial \phi _j}{\partial x_2}} \right) \frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \\
 &=\int_{\Omega}{f_2\phi _i\,\,\mathrm{d}x_1\mathrm{d}x_2}
-\end{align}
+\end{aligned}
 $$
 排列成矩阵形式
 $$
-\begin{align}
+\begin{aligned}
 A_1=\int_{\Omega}{\lambda \frac{\partial \phi _j}{\partial x_1}\frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2},\quad    A_2=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_1}\frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \\
 A_3=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2},  \quad   A_4=\int_{\Omega}{\lambda \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2}
@@ -687,7 +703,7 @@ A_3=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _
 A_5=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_1}\frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2},    \quad A_6=\int_{\Omega}{\lambda \frac{\partial \phi _j}{\partial x_1}\frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}
 \\
 A_7=\int_{\Omega}{\mu \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _i}{\partial x_1}\,\,\mathrm{d}x_1\mathrm{d}x_2},    \quad A_8=\int_{\Omega}{\lambda \frac{\partial \phi _j}{\partial x_2}\frac{\partial \phi _i}{\partial x_2}\,\,\mathrm{d}x_1\mathrm{d}x_2}
-\end{align}
+\end{aligned}
 $$
 写为
 $$
@@ -704,7 +720,46 @@ $$
 $$
 也就是说，只需要多次调用矩阵组装的子程序，最后排成大矩阵求解即可
 
-## 5.2 Stress boundary condition
+## 5.2 Measurements for errors
+
+$L^{\infty}$ norm error:
+$$
+\begin{aligned}
+\left\| \boldsymbol{u}-\boldsymbol{u}_h \right\| _{\infty}
+&=\max \left( \left\| u_1-u_{1h} \right\| _{\infty},\left\| u_2-u_{2h} \right\| _{\infty} \right) 
+\\
+\left\| u_1-u_{1h} \right\| _{\infty}
+&=\underset{\Omega}{\mathrm{sup}}\left| u_1-u_{1h} \right|
+\\
+\left\| u_2-u_{2h} \right\| _{\infty}
+&=\underset{\Omega}{\mathrm{sup}}\left| u_2-u_{2h} \right|
+\end{aligned}
+$$
+
+
+$L^2$ norm error:
+$$
+\begin{aligned}
+\left\| \boldsymbol{u}-\boldsymbol{u}_h \right\| _0&=\sqrt{\left\| u_1-u_{1h} \right\| _{0}^{2}+\left\| u_2-u_{2h} \right\| _{0}^{2}}
+\\
+\left\| u_1-u_{1h} \right\| _0&=\sqrt{\int_{\Omega}{\left( u_1-u_{1h} \right) ^2\mathrm{d}x_1\mathrm{d}x_2}}
+\\
+\left\| u_2-u_{2h} \right\| _0&=\sqrt{\int_{\Omega}{\left( u_2-u_{2h} \right) ^2\mathrm{d}x_1\mathrm{d}x_2}}
+\end{aligned}
+$$
+
+$H^1$ semi-norm error:
+$$
+\begin{aligned}
+\left| \boldsymbol{u}-\boldsymbol{u}_h \right|_1&=\sqrt{\left| u_1-u_{1h} \right|_{1}^{2}+\left| u_2-u_{2h} \right|_{1}^{2}}
+\\
+\left| u_1-u_{1h} \right|_1&=\sqrt{\int_{\Omega}{\left( \frac{\partial \left( u_1-u_{1h} \right)}{\partial x_1} \right) ^2+\left( \frac{\partial \left( u_1-u_{1h} \right)}{\partial x_2} \right) ^2\mathrm{d}x_1\mathrm{d}x_2}}
+\\
+\left| u_2-u_{2h} \right|_1&=\sqrt{\int_{\Omega}{\left( \frac{\partial \left( u_2-u_{2h} \right)}{\partial x_1} \right) ^2+\left( \frac{\partial \left( u_2-u_{2h} \right)}{\partial x_2} \right) ^2\mathrm{d}x_1\mathrm{d}x_2}}
+\end{aligned}
+$$
+
+## 5.3 Stress boundary condition
 
 $$
 \begin{cases}
@@ -730,11 +785,60 @@ $$
 \end{cases}
 $$
 其中 $\boldsymbol{n}=(n_1,n_2)^T$ 是 $\Gamma_S$ 的单位外法线向量
-// TODO!!!
+
+因此边界积分项可以写为
+$$
+\begin{aligned}
+\int_{\partial \Omega}{\left( \mathbf{\sigma }\left( \boldsymbol{u} \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}&=\int_{\Gamma _S}{\left( \mathbf{\sigma }\left( \boldsymbol{u} \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}+\int_{\partial \Omega /\Gamma _S}{\left( \mathbf{\sigma }\left( \boldsymbol{u} \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}
+\\
+&=\int_{\Gamma _S}{\boldsymbol{p}\cdot \boldsymbol{v}\,\,\mathrm{d}s}
+\end{aligned}
+$$
+弱形式为
+$$
+\int_{\Omega}{\mathbf{\sigma }\left( \boldsymbol{u} \right) :\nabla \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Gamma _S}{\boldsymbol{p}\cdot \boldsymbol{v}\,\,\mathrm{d}s}
+$$
 
 ## 5.3 Robin boundary conditions
 
-// TODO!!!
+$$
+\begin{cases}
+	-\nabla \cdot \mathbf{\sigma }\left( \boldsymbol{u} \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\sigma (\boldsymbol{u})\boldsymbol{n}+r\boldsymbol{u}=\boldsymbol{q}\,\,\mathrm{on}\ \Gamma _R\subseteq \partial \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \Gamma _D=\partial \Omega /\Gamma _S\\
+\end{cases}
+$$
+
+$$
+\int_{\Omega}{\mathbf{\sigma }\left( \boldsymbol{u} \right) :\nabla \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Gamma _R}{r\boldsymbol{u}\cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Gamma _R}{\boldsymbol{q}\cdot \boldsymbol{v}\,\,\mathrm{d}s}
+$$
+
+## 5.4 Stress boundary condition in normal/tangential directions
+
+$$
+\begin{cases}
+	-\nabla \cdot \mathbf{\sigma }\left( \boldsymbol{u} \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\boldsymbol{n}^T\sigma (\boldsymbol{u})\boldsymbol{n}=p_n,\  \boldsymbol{\tau }^T\sigma (\boldsymbol{u})\boldsymbol{n}=p_{\tau}\,\,\mathrm{on}\ \Gamma _S\subset \partial \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \Gamma _D=\partial \Omega /\Gamma _S\\
+\end{cases}
+$$
+
+$$
+\int_{\Omega}{\mathbf{\sigma }\left( \boldsymbol{u} \right) :\nabla \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Gamma _S}{p_n\left( \boldsymbol{n}^T\boldsymbol{v} \right) \,\,\mathrm{d}s}+\int_{\Gamma _S}{p_{\tau}\left( \boldsymbol{\tau }^T\boldsymbol{v} \right) \,\,\mathrm{d}s}
+$$
+
+## 5.5 Robin boundary condition in normal/tangential directions
+$$
+\begin{cases}
+	-\nabla \cdot \mathbf{\sigma }\left( \boldsymbol{u} \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\boldsymbol{n}^T\sigma (\boldsymbol{u})\boldsymbol{n}+r\boldsymbol{n}^T\boldsymbol{u}=q_n,\ \boldsymbol{\tau }^T\sigma (\boldsymbol{u})\boldsymbol{n}+r\boldsymbol{\tau }^T\boldsymbol{u}=q_{\tau}\,\,\mathrm{on}\ \Gamma _R\subseteq \partial \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \Gamma _D=\partial \Omega /\Gamma _R\\
+\end{cases}
+$$
+
+$$
+\int_{\Omega}{\mathbf{\sigma }\left( \boldsymbol{u} \right) :\nabla \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Gamma _R}{\left( r\boldsymbol{n}^T\boldsymbol{u} \right) \left( \boldsymbol{n}^T\boldsymbol{v} \right) \,\,\mathrm{d}s}+\int_{\Gamma _R}{\left( r\boldsymbol{\tau }^T\boldsymbol{u} \right) \left( \boldsymbol{\tau }^T\boldsymbol{v} \right) \,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x_1\mathrm{d}x_2}+\int_{\Gamma _R}{q_n\left( \boldsymbol{n}^T\boldsymbol{v} \right) \,\,\mathrm{d}s}+\int_{\Gamma _R}{q_{\tau}\left( \boldsymbol{\tau }^T\boldsymbol{v} \right) \,\,\mathrm{d}s}
+$$
 
 # 学习小结
 
@@ -763,9 +867,11 @@ $$
 	- 完成第六、七、八、九章基本内容，和算例结果对上
 	- 拓展内容听课同时把笔记记好
 	- 补全所有的拓展内容，整理课程笔记
-	- 开始实现拓展内容
+	- 开始实现拓展内容（包括前四章没有完成的拓展内容）
 
 # Chapter 6: Finite elements for 2D steady Stokes equation
+
+
 
 # Chapter 7: Finite elements for 2D steady Navier-Stokes equation
 
