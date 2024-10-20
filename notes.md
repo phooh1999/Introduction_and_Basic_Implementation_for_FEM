@@ -862,6 +862,7 @@ $$
 	- Crouzeix-Raviart 单元
 	- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
 	- 更加复杂的边界条件的处理，如stress condition的法向、切向写法等等
+	- 三维问题！！！
 - 当前任务
 	- 完成第五章程序基本内容重构，和算例结果对上
 	- 完成第六、七、八、九章基本内容，和算例结果对上
@@ -870,6 +871,132 @@ $$
 	- 开始实现拓展内容（包括前四章没有完成的拓展内容）
 
 # Chapter 6: Finite elements for 2D steady Stokes equation
+
+## 6.1 Weak/Galerkin formulation
+
+$$
+\begin{cases}
+	-\nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\nabla \cdot \boldsymbol{u}=0\ \mathrm{in}\ \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \partial \Omega\\
+\end{cases}
+$$
+
+where
+$$
+\boldsymbol{u}\left( x,y \right) =\left( u_1,u_2 \right) ^T,\boldsymbol{g}\left( x,y \right) =\left( g_1,g_2 \right) ^T,\boldsymbol{f}\left( x,y \right) =\left( f_1,f_2 \right) ^T
+$$
+
+the stress tensor $\mathbb{T} \left( \boldsymbol{u},p \right)$ is defined as
+$$
+\mathbb{T} \left( \boldsymbol{u},p \right) =2\nu \mathbb{D} \left( \boldsymbol{u} \right) -p\mathbb{I} 
+$$
+
+where $\nu$ is the viscosity and the deformation tensor 
+$$
+\mathbb{D} \left( \boldsymbol{u} \right) =\frac{1}{2}\left( \nabla \boldsymbol{u}+\left( \nabla \boldsymbol{u} \right) ^T \right) 
+$$
+
+in more details, the deformation tensor can be written as
+$$
+\mathbb{D} \left( \boldsymbol{u} \right) =\left[ \begin{matrix}
+	\frac{\partial u_1}{\partial x}&		\frac{1}{2}\left( \frac{\partial u_1}{\partial y}+\frac{\partial u_2}{\partial x} \right)\\
+	\frac{1}{2}\left( \frac{\partial u_1}{\partial y}+\frac{\partial u_2}{\partial x} \right)&		\frac{\partial u_2}{\partial y}\\
+\end{matrix} \right] 
+$$
+
+hence the stress tensor can be written as 
+$$
+\mathbb{T} \left( \boldsymbol{u},p \right) =\left[ \begin{matrix}
+	2\nu \frac{\partial u_1}{\partial x}-p&		\nu \left( \frac{\partial u_1}{\partial y}+\frac{\partial u_2}{\partial x} \right)\\
+	\nu \left( \frac{\partial u_1}{\partial y}+\frac{\partial u_2}{\partial x} \right)&		2\nu \frac{\partial u_1}{\partial x}-p\\
+\end{matrix} \right] 
+$$
+
+First, take the inner product with a vector function $\boldsymbol{v}\left( x,y \right) =\left( v_1,v_2 \right) ^T$ on both sides of the Stokes equation:
+$$
+-\int_{\Omega}{\left( \nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) \right) \cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+$$
+
+Second, multiply the divergence free equation by a function $q(x,y)$:
+$$
+\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}
+$$
+
+$\boldsymbol{u}(x,y)$ and $p(x,y)$ are called trail functions, $\boldsymbol{v}(x,y)$ and $q(x,y)$ are called test functions.
+
+Using integration by parts in multi-dimension:
+$$
+\int_{\Omega}{\left( \nabla \cdot \mathbb{T} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}=\int_{\partial \Omega}{\left( \mathbb{T} \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}-\int_{\Omega}{\mathbb{T} :\nabla \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+$$
+
+where $\boldsymbol{n}=(n_1,n_2)^T$ is the unit outer normal vector of $\partial \Omega$, we obtain
+$$
+\int_{\Omega}{\mathbb{T} \left( \boldsymbol{u},p \right) :\nabla \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+$$
+
+Here,
+$$
+\begin{aligned}
+	\mathbf{A}:\mathbf{B}&=\left[ \begin{matrix}
+	a_{11}&		a_{12}\\
+	a_{21}&		a_{22}\\
+\end{matrix} \right] :\left[ \begin{matrix}
+	b_{11}&		b_{12}\\
+	b_{21}&		b_{22}\\
+\end{matrix} \right] 
+\\
+&=a_{11}b_{11}+a_{12}b_{12}+a_{21}b_{21}+a_{22}b_{22}
+\end{aligned}
+$$
+
+At last, we obtain:
+$$
+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}s}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+\\
+-\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0
+$$
+
+Here we multiply the second equation by $-1$ in order to keep the matrix formulation symmetric later.
+
+## 6.2 Matrix formulation
+Define
+$$
+\mathbf{A}_1=\left[ \int_{\Omega}{\nu \frac{\partial \phi _j}{\partial x}\frac{\partial \phi _i}{\partial x}\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}, \mathbf{A}_2=\left[ \int_{\Omega}{\nu \frac{\partial \phi _j}{\partial y}\frac{\partial \phi _i}{\partial y}\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+
+$$
+\mathbf{A}_3=\left[ \int_{\Omega}{\nu \frac{\partial \phi _j}{\partial x}\frac{\partial \phi _i}{\partial y}\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}, \mathbf{A}_4=\left[ \int_{\Omega}{\nu \frac{\partial \phi _j}{\partial y}\frac{\partial \phi _i}{\partial x}\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+
+$$
+\mathbf{A}_5=\left[ \int_{\Omega}{-\psi _j\frac{\partial \phi _i}{\partial x}\mathrm{d}x\mathrm{d}y} \right] _{i=1,j=1}^{N_b,N_{bp}}, \mathbf{A}_6=\left[ \int_{\Omega}{-\psi _j\frac{\partial \phi _i}{\partial y}\mathrm{d}x\mathrm{d}y} \right] _{i=1,j=1}^{N_b,N_{bp}}
+$$
+
+$$
+\mathbf{A}_7=\left[ \int_{\Omega}{-\frac{\partial \phi _j}{\partial x}\psi _i\mathrm{d}x\mathrm{d}y} \right] _{i=1,j=1}^{N_{bp},N_b}, \mathbf{A}_8=\left[ \int_{\Omega}{-\frac{\partial \phi _j}{\partial y}\psi _i\mathrm{d}x\mathrm{d}y} \right] _{i=1,j=1}^{N_{bp},N_b}
+$$
+
+Define a zero matrix $\mathbb{O} _1=\left[ 0 \right] _{i=1,j=1}^{N_{bp},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$, then
+$$
+\mathbf{A}=\left[ \begin{matrix}
+	2\mathbf{A}_1+\mathbf{A}_2&		\mathbf{A}_3&		\mathbf{A}_5\\
+	\mathbf{A}_4&		2\mathbf{A}_2+\mathbf{A}_1&		\mathbf{A}_6\\
+	\mathbf{A}_7&		\mathbf{A}_8&		\mathbb{O} _1\\
+\end{matrix} \right] 
+$$
+$$
+\mathbf{A}_4=\mathbf{A}_{3}^{T}, \mathbf{A}_7=\mathbf{A}_{5}^{T}, \mathbf{A}_8=\mathbf{A}_{6}^{T}
+$$
+
+Hence the matrix $\mathbf{A}$ is actually symmetric
+$$
+\mathbf{A}=\left[ \begin{matrix}
+	2\mathbf{A}_1+\mathbf{A}_2&		\mathbf{A}_3&		\mathbf{A}_5\\
+	\mathbf{A}_{3}^{T}&		2\mathbf{A}_2+\mathbf{A}_1&		\mathbf{A}_6\\
+	\mathbf{A}_{5}^{T}&		\mathbf{A}_{6}^{T}&		\mathbb{O} _1\\
+\end{matrix} \right] 
+$$
 
 
 
