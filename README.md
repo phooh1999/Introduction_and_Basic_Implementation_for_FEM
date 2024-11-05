@@ -2,6 +2,7 @@
 - 天元数学东北中心短期课程：《有限元基础编程》
 - 何晓明老师 [MISSOURI S&T Dr.Xiaoming He](https://sites.mst.edu/xiaominghe/)
 - [课程录播](https://www.bilibili.com/video/BV1Zv411t7Lj/)
+- [优质笔记](https://github.com/chichuDlong/FiniteElementMethod_Book)
 
 **课程主要目标**  
 1. 讲解有限元算法通用结构以及相应的基本有限元程序的通用结构；

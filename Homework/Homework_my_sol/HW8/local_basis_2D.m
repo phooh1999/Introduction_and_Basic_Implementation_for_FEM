@@ -10,7 +10,7 @@ y2 = vertices(2,2);
 x3 = vertices(1,3);
 y3 = vertices(2,3);
 
-J = abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
+J = (x2-x1)*(y3-y1)-(x3-x1)*(y2-y1);
 
 x_hat = ((y3-y1)*(x-x1)-(x3-x1)*(y-y1))/J;
 y_hat = (-(y2-y1)*(x-x1)+(x2-x1)*(y-y1))/J;

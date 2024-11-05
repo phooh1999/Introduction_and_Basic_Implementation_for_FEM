@@ -8,12 +8,12 @@ x_domain = [0,1,0,1];
 mesh_type = 201;
 % 网格单元类型
 
-% basis_type_trial = 201;
-basis_type_trial = 202;
+basis_type_trial = 201;
+% basis_type_trial = 202;
 % trial function 
 
-% basis_type_test = 201;
-basis_type_test = 202;
+basis_type_test = 201;
+% basis_type_test = 202;
 % test function
 
 % coe
