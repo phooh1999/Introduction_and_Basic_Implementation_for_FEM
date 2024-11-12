@@ -1,4 +1,4 @@
-function generateEquation(obj)
+function generateEquations(obj)
 
 P = obj.meshInfo.P;
 T = obj.meshInfo.T;

@@ -9,7 +9,7 @@ end
 addpath(genpath(strcat(pwd,sslash,'test_solver')));
 
 fprintf('\n')
-disp(' __  __       ______ ______ __  __  ')
+disp('  __  __       ______ ______ __  __ ')
 disp(' |  \/  |     |  ____|  ____|  \/  |')
 disp(' | \  / |_   _| |__  | |__  | \  / |')
 disp(' | |\/| | | | |  __| |  __| | |\/| |')
