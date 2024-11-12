@@ -863,8 +863,6 @@ $$
 	- 补全所有的拓展内容，整理课程笔记
 	- 实现拓展内容（包括前四章没有完成的拓展内容）
 
-- 整体刚度矩阵的储存方法，三元组，可以参考开源项目 Qinxiaoye/FEM3D-C3D8
-
 # Chapter 6: Finite elements for 2D steady Stokes equation
 
 ## 6.1 Weak/Galerkin formulation

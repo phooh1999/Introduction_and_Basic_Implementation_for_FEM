@@ -28,7 +28,8 @@ funBound1 = @(x,y) 0;
 funBound2 = @(x,y) 0;
 
 % reference solution
-
+funRef1 = @(x,y) sin(pi*x)*sin(pi*y);
+funRef2 = @(x,y) x*(x-1)*y*(y-1);
 
 %% Solver
 % Preprocessing

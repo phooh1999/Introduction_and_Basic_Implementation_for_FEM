@@ -10,7 +10,8 @@ classdef TriQuadrature < handle
             tablesIntegrateTriangle(obj, points);
         end
         
-        result = evaluate(obj, fun, vertices)
+        result = evaluate(obj, fun, vertices);
+        [nodes,jac] = localNodes(obj, vertices);
         
     end
 end

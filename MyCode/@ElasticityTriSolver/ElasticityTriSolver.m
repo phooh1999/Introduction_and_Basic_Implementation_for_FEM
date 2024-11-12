@@ -17,8 +17,6 @@ classdef ElasticityTriSolver < handle
         lhsMatrix
         rhsVector
         
-        % TODO: boundary conditions
-        
         femSolution
         
         % other functions required to solve the problem
@@ -51,7 +49,12 @@ classdef ElasticityTriSolver < handle
         boundaryConditions(obj);
         
         function solve(obj)
-            obj.femSolution = obj.lhsMatrix\obj.rhsVector;
+            colSize = obj.trialElementInfo.numPoints;
+            obj.femSolution = zeros(colSize,2);
+            x = obj.lhsMatrix\obj.rhsVector;
+            solution.u1 = x(1:colSize);
+            solution.u2 = x(colSize+1:2*colSize);
+            obj.femSolution = solution;
         end
         
     end

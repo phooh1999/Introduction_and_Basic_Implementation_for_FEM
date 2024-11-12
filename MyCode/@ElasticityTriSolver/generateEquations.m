@@ -37,6 +37,7 @@ for i = 1:obj.numElements
     tmp4 = [tmp3;tmp3+colSize];
     TA_trial = kron(tmp4,ones(2*trialEleSize,1));
     
+    % element matrix
     A1 = obj.elementComputeMethod.computeLhs(vertices,obj.fLambda,1,0,1,0);
     A2 = obj.elementComputeMethod.computeLhs(vertices,obj.fMu,1,0,1,0);
     A3 = obj.elementComputeMethod.computeLhs(vertices,obj.fMu,0,1,0,1);
@@ -51,6 +52,7 @@ for i = 1:obj.numElements
     
     AIndex = (i-1)*computeASize+1 : i*computeASize;
     
+    % element matrix to total matrix
     A_i(AIndex) = TA_test;
     A_j(AIndex) = TA_trial;
     A_k(AIndex) = A;
@@ -63,6 +65,7 @@ for i = 1:obj.numElements
     
     bIndex = (i-1)*computebSize+1 : i*computebSize;
     
+    % element vector to total vector
     b_i(bIndex) = [Tb_test;Tb_test + rowSize];
     b_k(bIndex) = b;
     
