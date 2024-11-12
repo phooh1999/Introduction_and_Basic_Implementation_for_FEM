@@ -29,7 +29,12 @@ funBound2 = @(x,y) 0;
 
 % reference solution
 funRef1 = @(x,y) sin(pi*x)*sin(pi*y);
+funRef1_x = @(x,y) pi*cos(pi*x)*sin(pi*y);
+funRef1_y = @(x,y) pi*sin(pi*x)*cos(pi*y);
+
 funRef2 = @(x,y) x*(x-1)*y*(y-1);
+funRef2_x = @(x,y) (2*x-1)*y*(y-1);
+funRef2_y = @(x,y) x*(x-1)*(2*y-1);
 
 %% Solver
 % Preprocessing
@@ -51,9 +56,16 @@ solver.boundaryConditions();
 solver.solve();
 
 % Postprocessing
+errMeasure = TriErrorMeasure(solver.femSolution,meshInfo,trialElementInfo,trialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y);
 
+errInfi = errMeasure.InfinityError();
+% errL2 = errMeasure.L2Error();
+% errH1 = errMeasure.H1Error();
 
-
+fprintf('%.4e\n',errInfi);
+% fprintf('%.4e\n',error_h0);
+% fprintf('%.4e\n',error_h1);
+fprintf('\n');
 
 %% Output
 
