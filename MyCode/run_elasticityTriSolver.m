@@ -1,13 +1,18 @@
 %% ---- Elasticity Triangle Solver ----
+disp('----------------------------------------------')
+disp('  h        Infi           L2            H1')
+formatSpec = '1/%2d    %.4e    %.4e    %.4e\n';
 
+tic
+for step = [8 16 32 64]
 %% Input
 % problem domain
 problemDomain.x = [0,1];
 problemDomain.y = [0,1];
 
 % steps of the mesh partition
-partitionSteps.x = 8;
-partitionSteps.y = 8;
+partitionSteps.x = step;
+partitionSteps.y = step;
 
 % basis function type
 trialBasisType = 2;
@@ -59,14 +64,11 @@ solver.solve();
 errMeasure = TriErrorMeasure(solver.femSolution,meshInfo,trialElementInfo,trialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y);
 
 errInfi = errMeasure.InfinityError();
-% errL2 = errMeasure.L2Error();
-% errH1 = errMeasure.H1Error();
-
-fprintf('%.4e\n',errInfi);
-% fprintf('%.4e\n',error_h0);
-% fprintf('%.4e\n',error_h1);
-fprintf('\n');
+errL2 = errMeasure.L2Error();
+errH1 = errMeasure.H1Error();
 
 %% Output
-
-
+fprintf(formatSpec,partitionSteps.x,errInfi,errL2,errH1)
+end
+toc
+disp('----------------------------------------------')
