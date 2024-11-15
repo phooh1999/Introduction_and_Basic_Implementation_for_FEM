@@ -20,7 +20,7 @@ testBasisType = 2;
 
 % number of gauss quadrature points
 gaussPoints2D = 9;
-gaussPointsLine = 4; % TODO: 边界条件处理中需要的
+gaussPointsLine = 4; % TODO: 边界条件处理中需要
 
 % other functions required to solve the problem
 funLambda = @(x,y) 1;
@@ -61,7 +61,7 @@ solver.boundaryConditions();
 solver.solve();
 
 % Postprocessing
-errMeasure = TriErrorMeasure(solver.femSolution,meshInfo,trialElementInfo,trialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y);
+errMeasure = ElasticityTriErrorMeasure(solver.femSolution,meshInfo,trialElementInfo,trialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y);
 
 errInfi = errMeasure.InfinityError();
 errL2 = errMeasure.L2Error();

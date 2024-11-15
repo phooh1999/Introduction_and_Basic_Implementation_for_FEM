@@ -50,7 +50,6 @@ classdef ElasticityTriSolver < handle
         
         function solve(obj)
             colSize = obj.trialElementInfo.numPoints;
-            obj.femSolution = zeros(colSize,2);
             x = obj.lhsMatrix\obj.rhsVector;
             solution.u1 = x(1:colSize);
             solution.u2 = x(colSize+1:2*colSize);

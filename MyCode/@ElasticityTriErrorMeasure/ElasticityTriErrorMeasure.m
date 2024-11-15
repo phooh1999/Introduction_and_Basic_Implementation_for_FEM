@@ -1,4 +1,4 @@
-classdef TriErrorMeasure < handle
+classdef ElasticityTriErrorMeasure < handle
 
     properties
         solution
@@ -6,8 +6,7 @@ classdef TriErrorMeasure < handle
         meshInfo
         trialElementInfo
         
-        trialFun
-        quadrature2D
+        elementErrorCompute
         
         f1
         f1_x
@@ -19,12 +18,13 @@ classdef TriErrorMeasure < handle
     end
     
     methods
-        function obj = TriErrorMeasure(sol,mesh,trialEle,trialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y)
+        function obj = ElasticityTriErrorMeasure(sol,mesh,trialEle,trialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y)
             obj.solution = sol;
             obj.meshInfo = mesh;
             obj.trialElementInfo = trialEle;
-            obj.trialFun = trialFun;
-            obj.quadrature2D = quad;
+            
+            obj.elementErrorCompute = TriElementErrorCompute(trialFun,quad);
+            
             obj.f1 = funRef1;
             obj.f1_x = funRef1_x;
             obj.f1_y = funRef1_y;
@@ -33,7 +33,6 @@ classdef TriErrorMeasure < handle
             obj.f2_y = funRef2_y;
         end
         
-        [valX,valY] = getValue(obj,funX,funY,index,orderX,orderY);
         err = InfinityError(obj);
         err = L2Error(obj);
         err = H1Error(obj);

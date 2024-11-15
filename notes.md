@@ -846,23 +846,6 @@ $$
 
 目前完成的部分算是《有限元基础编程I》，差不多是正常教学一学期的内容，后续的内容《有限元基础编程II》录播中也有，之后打算进一步学习。同时，前半段的学习算是手把手带上路，包括问题描述、公式推导、伪代码课件中都有详细的讲述，指导性编程也比较详细，之后的学习应尝试自己独立走完整个流程，完成课件中提到的一些小课题等内容，自行设计和完成相应的算例测试。
 
-## Review
-
-重新把之前的视频、实现代码、学习记录看一遍，然后总结、重构自己的程序，再开始推进下一阶段的学习。
-- 基本内容
-	- 误差计算程序
-- 拓展内容
-	- Crouzeix-Raviart 单元
-	- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
-	- 更加复杂的边界条件的处理，如stress condition的法向、切向写法等等
-	- 3D问题
-- 当前任务
-	- 完成第五章程序基本内容重构，和算例结果对上
-	- 完成第六、七、八、九章基本内容，和算例结果对上
-	- 拓展内容听课同时把笔记记好
-	- 补全所有的拓展内容，整理课程笔记
-	- 实现拓展内容（包括前四章没有完成的拓展内容）
-
 # Chapter 6: Finite elements for 2D steady Stokes equation
 
 ## 6.1 Weak/Galerkin formulation
@@ -952,6 +935,14 @@ $$
 
 Here we multiply the second equation by $-1$ in order to keep the matrix formulation symmetric later.
 
+$$
+\begin{aligned}
+&\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x \mathrm{d}y}
+\\
+=&\int_{\Omega}{\nu \left( 2\frac{\partial u_1}{\partial x}\frac{\partial v_1}{\partial x}+2\frac{\partial u_2}{\partial y}\frac{\partial v_2}{\partial y}+\frac{\partial u_1}{\partial y}\frac{\partial v_1}{\partial y}+\frac{\partial u_1}{\partial y}\frac{\partial v_2}{\partial x}+\frac{\partial u_2}{\partial x}\frac{\partial v_1}{\partial y}+\frac{\partial u_2}{\partial x}\frac{\partial v_2}{\partial x} \right) \,\mathrm{d}x\mathrm{d}y}
+\end{aligned}
+$$
+
 ## 6.2 Matrix formulation
 Define
 $$
@@ -998,3 +989,23 @@ $$
 # Chapter 8: Finite elements for 2D unsteady Stokes and linear elasticity equations
 
 # Chapter 9: Finite elements for 2D unsteady Navier-Stokes equations
+
+# 拓展内容整理
+
+- 拓展内容
+	- Crouzeix-Raviart 单元
+	- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
+	- 更加复杂的边界条件的处理，如stress condition的法向、切向写法等等
+	- 3D问题
+- 当前任务
+	- 完成第六、七、八、九章基本内容，和算例结果对上
+	- 拓展内容听课同时把笔记记好
+	- 补全所有的拓展内容，整理课程笔记
+	- 实现拓展内容（包括前五章没有完成的拓展内容）
+
+- 第六章
+  - 其他边界条件
+  - stress, robin, dirichlet/stress/robin mixed boundary condition
+  - stress, robin, dirichlet/stress/robin mixed boundary condition in normal/tangential directions
+- 第七章
+  - 
