@@ -1,4 +1,4 @@
-function generateEquations(obj)
+function generateLinearPart(obj)
 
 P = obj.meshInfo.P;
 T = obj.meshInfo.T;
@@ -77,8 +77,8 @@ for i = 1:obj.numElements
     
 end
 
-obj.lhsMatrix = sparse(A_i,A_j,A_k,rowSize*2 + pRowSize,colSize*2 + pColSize);
-obj.rhsVector = sparse(b_i,b_j,b_k,rowSize*2 + pRowSize,1);
+obj.lhsLinearMatrix = sparse(A_i,A_j,A_k,rowSize*2 + pRowSize,colSize*2 + pColSize);
+obj.rhsLinearVector = sparse(b_i,b_j,b_k,rowSize*2 + pRowSize,1);
 
 end
 

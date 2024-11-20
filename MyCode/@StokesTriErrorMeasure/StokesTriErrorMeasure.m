@@ -1,4 +1,4 @@
-classdef SteadyStokesTriErrorMeasure < handle
+classdef StokesTriErrorMeasure < handle
 
     properties
         solution
@@ -24,7 +24,7 @@ classdef SteadyStokesTriErrorMeasure < handle
     end
     
     methods
-        function obj = SteadyStokesTriErrorMeasure(sol,mesh,uTrialEle,pTrialEle,uTrialFun,pTrialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y,funRefp,funRefp_x,funRefp_y)
+        function obj = StokesTriErrorMeasure(sol,mesh,uTrialEle,pTrialEle,uTrialFun,pTrialFun,quad,funRef1,funRef1_x,funRef1_y,funRef2,funRef2_x,funRef2_y,funRefp,funRefp_x,funRefp_y)
             obj.solution = sol;
             
             obj.meshInfo = mesh;

@@ -1,4 +1,4 @@
-classdef SteadyStokesTriSolver < handle
+classdef SteadyNavierStokesTriSolver < handle
 
     properties
         % Geometry
@@ -17,6 +17,9 @@ classdef SteadyStokesTriSolver < handle
         uuComputeMethod
         puComputeMethod
         
+        lhsLinearMatrix
+        rhsLinearVector
+        
         lhsMatrix
         rhsVector
         
@@ -31,7 +34,7 @@ classdef SteadyStokesTriSolver < handle
     end
     
     methods
-        function obj = SteadyStokesTriSolver(mesh,uTrialElement,uTestElement,pTrialElement,pTestElement,boundary,uTrial,uTest,pTrial,pTest,gauss,mu,g1,g2,bf1,bf2)
+        function obj = SteadyNavierStokesTriSolver(mesh,uTrialElement,uTestElement,pTrialElement,pTestElement,boundary,uTrial,uTest,pTrial,pTest,gauss,mu,g1,g2,bf1,bf2)
             obj.meshInfo = mesh;
             obj.uTrialElementInfo = uTrialElement;
             obj.uTestElementInfo = uTestElement;
@@ -50,21 +53,15 @@ classdef SteadyStokesTriSolver < handle
             obj.boundF2 = bf2;
         end
         
-        generateEquations(obj);
+        generateLinearPart(obj);
+        [AN, bN] = generateNonlinearPart(obj,preSol);
         
         boundaryConditions(obj);
         
         fixPressure(obj,funRefp,index);
         
-        function solve(obj)
-            uColSize = obj.uTrialElementInfo.numPoints;
-            pColSize = obj.pTrialElementInfo.numPoints;
-            x = obj.lhsMatrix\obj.rhsVector;
-            solution.u1 = x(1:uColSize);
-            solution.u2 = x(uColSize+1:2*uColSize);
-            solution.p = x(2*uColSize+1:2*uColSize+pColSize);
-            obj.femSolution = solution;
-        end
+        solve(obj,iniSol,maxStep,rtol,atol);
+
     end
 end
 

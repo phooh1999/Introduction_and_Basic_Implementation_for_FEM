@@ -17,6 +17,7 @@ classdef TriElementCompute < handle
         eleMatrix = computeLhs(obj,vertices,coe,trialOrderX,trialOrderY,testOrderX,testOrderY);
         eleVector = computeRhs(obj,vertices,coe,testOrderX,testOrderY);
 
+        val = getVal(obj,x,y,orderX,orderY,femSol,vertices);
     end
 end
 

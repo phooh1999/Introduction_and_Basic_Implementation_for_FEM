@@ -1,4 +1,4 @@
-%% ---- Chapter 6: Finite elements for 2D steady Stokes equation ----
+%% ---- Chapter 7: Finite elements for 2D steady Navier-Stokes equation ----
 disp('----------------------------------------------')
 formatSpec = '1/%2d    %.4e    %.4e    %.4e\n';
 
@@ -31,8 +31,8 @@ gaussPointsLine = 4; % TODO: 边界条件处理中需要
 
 % other functions required to solve the problem
 funMu = @(x,y) 1;
-funF1 = @(x,y) -2*funMu(x,y)*x^2 - 2*funMu(x,y)*y^2 - funMu(x,y)*exp(-y) + pi^2*cos(pi*x)*cos(2*pi*y);
-funF2 = @(x,y) 4*funMu(x,y)*x*y - funMu(x,y)*pi^3*sin(pi*x) + 2*pi*(2-pi*sin(pi*x))*sin(2*pi*y);
+funF1 = @(x,y) -2*funMu(x,y)*x^2 - 2*funMu(x,y)*y^2 - funMu(x,y)*exp(-y) + pi^2*cos(pi*x)*cos(2*pi*y) + 2*x*y^2*(x^2*y^2+exp(-y)) + (-2*x*y^3/3+2-pi*sin(pi*x))*(2*x^2*y-exp(-y));
+funF2 = @(x,y) 4*funMu(x,y)*x*y - funMu(x,y)*pi^3*sin(pi*x) + 2*pi*(2-pi*sin(pi*x))*sin(2*pi*y) + (x^2*y^2+exp(-y))*(-2*y^3/3-pi^2*cos(pi*x)) + (-2*x*y^3/3+2-pi*sin(pi*x))*(-2*x*y^2);
 
 % boundary conditions
 funBoundu1 = @bound1;
@@ -68,17 +68,16 @@ pTrialFun = LocalTriBasisFunction(pTrialBasisType);
 pTestFun = LocalTriBasisFunction(pTestBasisType);
 
 quad = TriQuadrature(gaussPoints2D);
-solver = SteadyStokesTriSolver(meshInfo,uTrialElementInfo,uTestElementInfo,pTrialElementInfo,pTestElementInfo,boundary,uTrialFun,uTestFun,pTrialFun,pTestFun,quad,funMu,funF1,funF2,funBoundu1,funBoundu2);
+solver = SteadyNavierStokesTriSolver(meshInfo,uTrialElementInfo,uTestElementInfo,pTrialElementInfo,pTestElementInfo,boundary,uTrialFun,uTestFun,pTrialFun,pTestFun,quad,funMu,funF1,funF2,funBoundu1,funBoundu2);
+
+% initial solution guess
+uColSize = solver.uTrialElementInfo.numPoints;
+pColSize = solver.pTrialElementInfo.numPoints;
+iniSol = sparse(2*uColSize+pColSize,1);
 
 % Solve
-solver.generateEquations();
-solver.boundaryConditions();
-
-% for Dirichlet boundary conditions
-% fix pressure at one point in the domain Omega
-solver.fixPressure(funRefp,1);
-
-solver.solve();
+solver.generateLinearPart();
+solver.solve(iniSol,25,1e-3,1e-6);
 
 % Postprocessing
 errMeasure = StokesTriErrorMeasure(solver.femSolution,meshInfo,uTrialElementInfo,pTrialElementInfo,uTrialFun,pTrialFun,quad,funRefu1,funRefu1_x,funRefu1_y,funRefu2,funRefu2_x,funRefu2_y,funRefp,funRefp_x,funRefp_y);

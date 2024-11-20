@@ -12,7 +12,7 @@
 
 **仓库内容**
 - `Homework` : 课程提供的八次作业、参考程序，以及自己的作业程序
-- `MyCode` : 尝试对自己的作业程序进行重构
+- `MyCode` : 尝试对自己的第八次作业程序进行重构，同时完成后续 Slides 中的基础部分和拓展部分
   - 将局部基函数的索引循环改成向量乘法
   - 计算单元刚度阵，使用三元组组装总刚度阵（稀疏矩阵）
 - `Slides` : 课程资料，以及一本不错的[笔记](https://github.com/chichuDlong/FiniteElementMethod_Book)

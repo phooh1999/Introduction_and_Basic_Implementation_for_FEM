@@ -844,7 +844,9 @@ $$
 
 在最简单的一维问题中打好基础，理解好有限元通用结构后，后续的通用程序大部分部分基本不变，每次只需要做少量的修改。然后逐渐向不同的有限元、不同的边界条件、二维三维、非稳态、非线性情况去拓展自己写出来的程序包。
 
-目前完成的部分算是《有限元基础编程I》，差不多是正常教学一学期的内容，后续的内容《有限元基础编程II》录播中也有，之后打算进一步学习。同时，前半段的学习算是手把手带上路，包括问题描述、公式推导、伪代码课件中都有详细的讲述，指导性编程也比较详细，之后的学习应尝试自己独立走完整个流程，完成课件中提到的一些小课题等内容，自行设计和完成相应的算例测试。
+目前完成的部分算是《有限元基础编程I》，差不多是正常教学一学期的内容，后续的内容《有限元基础编程II》录播中也有，之后打算进一步学习。
+
+同时，前半段的学习算是手把手带上路，包括问题描述、公式推导、伪代码课件中都有详细的讲述，指导性编程也比较详细，之后的学习应尝试自己独立走完整个流程，完成课件中提到的一些小课题等内容，自行设计和完成相应的算例测试。
 
 # Chapter 6: Finite elements for 2D steady Stokes equation
 
@@ -928,7 +930,7 @@ $$
 
 At last, we obtain:
 $$
-\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}s}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
 \\
 -\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0
 $$
@@ -982,9 +984,154 @@ $$
 \end{matrix} \right] 
 $$
 
+## 6.3 Stress boundary condition
 
+$$
+\begin{cases}
+	-\nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\nabla \cdot \boldsymbol{u}=0\ \mathrm{in}\ \Omega\\
+	\mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n}=\boldsymbol{p}\,\,\mathrm{on}\ \Gamma _S\subset \partial \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \Gamma _D=\partial \Omega /\Gamma _S\\
+\end{cases}
+$$
+
+where 
+$$
+\boldsymbol{u}\left( x,y \right) =\left( u_1,u_2 \right) ^T,\boldsymbol{g}\left( x,y \right) =\left( g_1,g_2 \right) ^T,\boldsymbol{p}\left( x,y \right) =\left( p_1,p_2 \right) ^T,\boldsymbol{f}\left( x,y \right) =\left( f_1,f_2 \right) ^T
+$$
+
+The weak formulation
+$$
+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Gamma _S}{\boldsymbol{p}\cdot \boldsymbol{v}\,\,\mathrm{d}s}
+\\
+-\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0
+$$
 
 # Chapter 7: Finite elements for 2D steady Navier-Stokes equation
+
+## 7.1 Weak/Galerkin formulation
+
+Consider the 2D Navier-Stokes equation:
+$$
+\begin{cases}
+	\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}-\nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega\\
+	\nabla \cdot \boldsymbol{u}=0\ \mathrm{in}\ \Omega\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \partial \Omega\\
+\end{cases}
+$$
+
+where
+$$
+\boldsymbol{u}\left( x,y \right) =\left( u_1,u_2 \right) ^T,\boldsymbol{g}\left( x,y \right) =\left( g_1,g_2 \right) ^T,\boldsymbol{f}\left( x,y \right) =\left( f_1,f_2 \right) ^T
+$$
+
+The nonlinear advection is defined as
+$$
+\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}=\left( \begin{array}{c}
+	u_1\frac{\partial u_1}{\partial x}+u_2\frac{\partial u_1}{\partial y}\\
+	u_1\frac{\partial u_2}{\partial x}+u_2\frac{\partial u_2}{\partial y}\\
+\end{array} \right) 
+$$
+
+Weak formulation in the vector format:
+$$
+\begin{aligned}
+&\int_{\Omega}{\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}
+\\
+&-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y},
+\\
+&-\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0
+\end{aligned}
+$$
+
+nonlinear advection in the scalar format:
+$$
+\begin{aligned}
+&\int_{\Omega}{\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+\\
+&=\int_{\Omega}{\left( u_1\frac{\partial u_1}{\partial x}v_1+u_2\frac{\partial u_1}{\partial y}v_1+u_1\frac{\partial u_2}{\partial x}v_2+u_2\frac{\partial u_2}{\partial y}v_2 \right) \,\,\mathrm{d}x\mathrm{d}y}
+\end{aligned}
+$$
+
+## 7.2 Newton's iteration
+
+- Initial guess: $\boldsymbol{u}^{\left( 0 \right)}$ and $p^{(0)}$
+- Newton's iteration for the weak formulation in the vector
+format: for $l=1,2,...,L$
+$$
+\begin{aligned}
+	&\int_{\Omega}{\left( \boldsymbol{u}^{\left( l \right)}\cdot \nabla \right) \boldsymbol{u}^{\left( l-1 \right)}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\left( \boldsymbol{u}^{\left( l-1 \right)}\cdot \nabla \right) \boldsymbol{u}^{\left( l \right)}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+	\\
+	&+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u}^{\left( l \right)} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\Omega}{p^{\left( l \right)}\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}
+	\\
+	&=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\left( \boldsymbol{u}^{\left( l-1 \right)}\cdot \nabla \right) \boldsymbol{u}^{\left( l-1 \right)}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}
+	\\
+	&-\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u}^{\left( l \right)} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0\\
+\end{aligned}
+$$
+
+## 7.3 Matrix formulation
+
+$$
+AN_1=\left[ \int_{\Omega}{\frac{\partial u_{1h}^{\left( l-1 \right)}}{\partial x}\phi _j\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}, AN_2=\left[ \int_{\Omega}{u_{1h}^{\left( l-1 \right)}\frac{\partial \phi _j}{\partial x}\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+$$
+AN_3=\left[ \int_{\Omega}{u_{2h}^{\left( l-1 \right)}\frac{\partial \phi _j}{\partial y}\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}, AN_4=\left[ \int_{\Omega}{\frac{\partial u_{1h}^{\left( l-1 \right)}}{\partial y}\phi _j\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+$$
+AN_5=\left[ \int_{\Omega}{\frac{\partial u_{2h}^{\left( l-1 \right)}}{\partial x}\phi _j\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}, AN_6=\left[ \int_{\Omega}{\frac{\partial u_{2h}^{\left( l-1 \right)}}{\partial y}\phi _j\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+
+Define a zero matrix $\mathbb{O}_1=\left[ 0 \right] _{i=1,j=1}^{N_{bp},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$ , $\mathbb{O}_2=\left[ 0 \right] _{i=1,j=1}^{N_{b},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$ , then
+$$
+AN=\left[ \begin{matrix}
+	AN_1+AN_2+AN_3&		AN_4&		\mathbb{O} _2\\
+	AN_5&		AN_6+AN_2+AN_3&		\mathbb{O} _2\\
+	\mathbb{O} _{2}^{T}&		\mathbb{O} _{2}^{T}&		\mathbb{O} _1\\
+\end{matrix} \right]
+$$
+
+Define the vector
+$$
+\overrightarrow{bN}=\left[ \begin{array}{c}
+	\overrightarrow{bN_1}+\overrightarrow{bN_2}\\
+	\overrightarrow{bN_3}+\overrightarrow{bN_4}\\
+	\overrightarrow{0}\\
+\end{array} \right] 
+$$
+where
+$$
+\overrightarrow{bN_1}=\left[ \int_{\Omega}{u_{1h}^{\left( l-1 \right)}\frac{\partial u_{1h}^{\left( l-1 \right)}}{\partial x}\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i=1}^{N_b},\overrightarrow{bN_2}=\left[ \int_{\Omega}{u_{2h}^{\left( l-1 \right)}\frac{\partial u_{1h}^{\left( l-1 \right)}}{\partial y}\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i=1}^{N_b}
+$$
+$$
+\overrightarrow{bN_3}=\left[ \int_{\Omega}{u_{1h}^{\left( l-1 \right)}\frac{\partial u_{2h}^{\left( l-1 \right)}}{\partial x}\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i=1}^{N_b},\overrightarrow{bN_4}=\left[ \int_{\Omega}{u_{2h}^{\left( l-1 \right)}\frac{\partial u_{2h}^{\left( l-1 \right)}}{\partial y}\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i=1}^{N_b}
+$$
+
+Here the size of the zero vector is $N_{bp}\times 1$ . That is, $\overrightarrow{0}=\left[ 0 \right] _{i=1}^{N_{bp}}$
+
+Define the unknown vector
+$$
+\vec{X}^{\left( l \right)}=\left[ \begin{array}{c}
+	\vec{X}_{1}^{\left( l \right)}\\
+	\vec{X}_{2}^{\left( l \right)}\\
+	\vec{X}_{3}^{\left( l \right)}\\
+\end{array} \right] 
+$$
+
+where
+$$
+\vec{X}_{1}^{\left( l \right)}=\left[ u_{1j}^{\left( l \right)} \right] _{j=1}^{N_b},\ \vec{X}_{2}^{\left( l \right)}=\left[ u_{2j}^{\left( l \right)} \right] _{j=1}^{N_b},\ \vec{X}_{3}^{\left( l \right)}=\left[ p_{j}^{\left( l \right)} \right] _{j=1}^{N_{bp}}
+$$
+
+Define
+$$
+A^{\left( l \right)}=A+AN,\ \vec{b}^{\left( l \right)}=\vec{b}+\overrightarrow{bN}
+$$
+
+For step $l(l=1,2,...,L)$ of the Newton's iteration, we obtain the linear algebratic system
+$$
+A^{\left( l \right)}\vec{X}^{\left( l \right)}=\vec{b}^{\left( l \right)}
+$$
 
 # Chapter 8: Finite elements for 2D unsteady Stokes and linear elasticity equations
 
@@ -998,14 +1145,21 @@ $$
 	- 更加复杂的边界条件的处理，如stress condition的法向、切向写法等等
 	- 3D问题
 - 当前任务
-	- 完成第六、七、八、九章基本内容，和算例结果对上
-	- 拓展内容听课同时把笔记记好
-	- 补全所有的拓展内容，整理课程笔记
-	- 实现拓展内容（包括前五章没有完成的拓展内容）
+	- 完成第七、八、九基本内容程序，和算例结果对上
+	- 补全所有的拓展内容笔记（包括前五章），整理课程笔记
+	- 实现所有的拓展内容程序
 
 - 第六章
-  - 其他边界条件
   - stress, robin, dirichlet/stress/robin mixed boundary condition
   - stress, robin, dirichlet/stress/robin mixed boundary condition in normal/tangential directions
-- 第七章
-  - 
+- 第八章
+  - mixed boundary condition
+  - mixed boundary condition in normal/tangential directions
+    - 非稳态条件下的 stress, robin boundary condition 是否需要在每一个时间迭代步都进行边界条件处理？
+    - 第四章视频下的评论：非稳态问题 $\theta$ 格式的Neumman和Robin边界需要对 $A(t_{m+1})$、$A(t_m)$、$b(t_{m+1})$、$b(t_m)$ 分别处理一遍，否则精度会降低一阶
+    - 第四章拓展部分问题，写出完整的弱形式后再进行有限元离散和时间离散，看看到底是不是需要
+  - unsteady linear elasticity equation
+    - 给出初始时刻的边界条件一阶时间偏导，如何给出初始的 $X_1$ ？
+    - 目前可能的做法是使用中心差分格式 $2\Delta t X_{0}^{\prime} = X_1 - X_{-1}$ 和递推格式 $AX_1=b_1$ 一起求解出 $X_1$
+- 第九章
+  - TODO!!!
