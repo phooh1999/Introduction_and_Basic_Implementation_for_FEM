@@ -1,4 +1,4 @@
-%% ---- Elasticity Triangle Solver ----
+%% ---- Chapter 5: Elasticity Triangle Solver ----
 disp('----------------------------------------------')
 disp('  h        Infi           L2            H1')
 formatSpec = '1/%2d    %.4e    %.4e    %.4e\n';

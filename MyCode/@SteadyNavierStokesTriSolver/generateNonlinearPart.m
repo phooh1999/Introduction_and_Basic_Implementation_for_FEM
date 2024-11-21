@@ -25,7 +25,7 @@ b_i = zeros(obj.numElements * computebSize,1);
 b_j = ones(obj.numElements * computebSize,1);
 b_k = zeros(obj.numElements * computebSize,1);
 
-% iterate elements TODO!!!
+% iterate elements
 for i = 1:obj.numElements
     
     vertices = P(T(i,:),:);

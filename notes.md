@@ -1082,7 +1082,7 @@ $$
 AN_5=\left[ \int_{\Omega}{\frac{\partial u_{2h}^{\left( l-1 \right)}}{\partial x}\phi _j\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}, AN_6=\left[ \int_{\Omega}{\frac{\partial u_{2h}^{\left( l-1 \right)}}{\partial y}\phi _j\phi _i\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
 $$
 
-Define a zero matrix $\mathbb{O}_1=\left[ 0 \right] _{i=1,j=1}^{N_{bp},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$ , $\mathbb{O}_2=\left[ 0 \right] _{i=1,j=1}^{N_{b},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$ , then
+Define a zero matrix $\mathbb{O}_1=\left[ 0 \right] _{i=1,j=1}^{N_{bp},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$ , $\mathbb{O}_2=\left[ 0 \right] _{i=1,j=1}^{N_{b},N_{bp}}$ whose size is $N_{b}\times N_{bp}$ , then
 $$
 AN=\left[ \begin{matrix}
 	AN_1+AN_2+AN_3&		AN_4&		\mathbb{O} _2\\
@@ -1135,6 +1135,77 @@ $$
 
 # Chapter 8: Finite elements for 2D unsteady Stokes and linear elasticity equations
 
+## 8.1 Weak formulation
+
+Consider the 2D unsteady Stokes equation
+$$
+\begin{cases}
+	\boldsymbol{u}_t-\nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega \times \left[ 0,T \right]\\
+	\nabla \cdot \boldsymbol{u}=0\ \mathrm{in}\ \Omega \times \left[ 0,T \right]\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \partial \Omega \times \left[ 0,T \right]\\
+	\boldsymbol{u}=\boldsymbol{u}_0, p=p_0, \mathrm{at}\ t=0 \ \mathrm{and}\ \mathrm{in}\ \Omega\\
+\end{cases}
+$$
+
+where $\Omega$ is a 2D domain, $[0,T]$ is the time interval, $\boldsymbol{f}(x,y,t)$ is a given function on $\Omega\times[0,T]$ , $\boldsymbol{g}(x,y,t)$ is a given function on $\partial\Omega\times[0,T]$ , $\boldsymbol{u}_0(x,y)$ and $p_0(x,y)$ are given functions on $\Omega$ at $t=0$ , $\boldsymbol{u}(x,y,t)$ and $p(x,y,t)$ are the unknown functions, and
+$$
+\boldsymbol{u}\left( x,y,t \right) =\left( u_1,u_2 \right) ^T,\boldsymbol{g}\left( x,y,t \right) =\left( g_1,g_2 \right) ^T,\\
+\boldsymbol{f}\left( x,y,t \right) =\left( f_1,f_2 \right) ^T,
+\boldsymbol{u}_0\left( x,y \right) =\left( u_{10},u_{20} \right) ^T,
+$$
+
+Weak formulation
+$$
+\begin{aligned}
+	&\int_{\Omega}{\boldsymbol{u}_t\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}\\
+	&-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y,}\\
+	&-\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0\\
+\end{aligned}
+$$
+
+We also have
+$$
+\int_{\Omega}{\boldsymbol{u}_t\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}=\int_{\Omega}{\frac{\partial u_1}{\partial t}v_1\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\frac{\partial u_2}{\partial t}v_2\,\,\mathrm{d}x\mathrm{d}y}
+$$
+
+## 8.2 Matrix formulation
+
+Define the basic mass matrix
+$$
+M_e=\left[ m_{ij} \right] _{i,j=1}^{N_b}=\left[ \int_{\Omega}{\phi _j\phi _i\,\,\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+
+Define a zero matrix $\mathbb{O}_1=\left[ 0 \right] _{i=1,j=1}^{N_{bp},N_{bp}}$ whose size is $N_{bp}\times N_{bp}$ , $\mathbb{O}_2=\left[ 0 \right] _{i=1,j=1}^{N_{b},N_{bp}}$ whose size is $N_{b}\times N_{bp}$ , $\mathbb{O}_3=\left[ 0 \right] _{i=1,j=1}^{N_{b},N_{b}}$ whose size is $N_{b}\times N_{b}$ , then the block mass matrix is 
+$$
+M=\left[ \begin{matrix}
+	M_e&		\mathbb{O} _3&		\mathbb{O} _2\\
+	\mathbb{O} _{3}^{T}&		M_e&		\mathbb{O} _2\\
+	\mathbb{O} _{2}^{T}&		\mathbb{O} _{2}^{T}&		\mathbb{O} _1\\
+\end{matrix} \right] 
+$$
+
+We obtain the first order ODE system
+$$
+M\vec{X}^{\prime}\left( t \right) +A\vec{X}\left( t \right) =\vec{b}\left( t \right) 
+$$
+
+## 8.3 Iteration scheme
+
+$$
+\bar{A}\vec{X}^{m+1}=\bar{\vec{b}}^{m+1}, m=0,...,M_m-1
+$$
+
+where
+$$
+\begin{aligned}
+&\bar{A}=\frac{M}{\Delta t}+\theta A
+\\
+&\bar{\vec{b}}^{m+1}=\theta \vec{b}\left( t_{m+1} \right) +\left( 1-\theta \right) \vec{b}\left( t_m \right) +\left[ \frac{M}{\Delta t}-\left( 1-\theta \right) A \right] \vec{X}^m
+\end{aligned}
+$$
+
+## 8.4 
+
 # Chapter 9: Finite elements for 2D unsteady Navier-Stokes equations
 
 # 拓展内容整理
@@ -1142,14 +1213,21 @@ $$
 - 拓展内容
 	- Crouzeix-Raviart 单元
 	- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
-	- 更加复杂的边界条件的处理，如stress condition的法向、切向写法等等
 	- 3D问题
 - 当前任务
-	- 完成第七、八、九基本内容程序，和算例结果对上
+	- 完成第八、九基本内容程序
 	- 补全所有的拓展内容笔记（包括前五章），整理课程笔记
 	- 实现所有的拓展内容程序
 
+- 第一章
+- 第二章
+- 第三章
+- 第四章
+- 第五章
 - 第六章
+  - stress, robin, dirichlet/stress/robin mixed boundary condition
+  - stress, robin, dirichlet/stress/robin mixed boundary condition in normal/tangential directions
+- 第七章
   - stress, robin, dirichlet/stress/robin mixed boundary condition
   - stress, robin, dirichlet/stress/robin mixed boundary condition in normal/tangential directions
 - 第八章
@@ -1158,8 +1236,12 @@ $$
     - 非稳态条件下的 stress, robin boundary condition 是否需要在每一个时间迭代步都进行边界条件处理？
     - 第四章视频下的评论：非稳态问题 $\theta$ 格式的Neumman和Robin边界需要对 $A(t_{m+1})$、$A(t_m)$、$b(t_{m+1})$、$b(t_m)$ 分别处理一遍，否则精度会降低一阶
     - 第四章拓展部分问题，写出完整的弱形式后再进行有限元离散和时间离散，看看到底是不是需要
+    - 根据课程视频，如果边界条件与时间相关，需要对 $A(t_{m+1}), A(t_m), b(t_{m+1}), b(t_m)$ 分别处理
+    - If the functions in the stress/Robin boundary conditions depend on time, then the same algorithms as those in Chapter 7 can be used at each time iteration step. But the time needs to be specified in these algorithms.
   - unsteady linear elasticity equation
     - 给出初始时刻的边界条件一阶时间偏导，如何给出初始的 $X_1$ ？
     - 目前可能的做法是使用中心差分格式 $2\Delta t X_{0}^{\prime} = X_1 - X_{-1}$ 和递推格式 $AX_1=b_1$ 一起求解出 $X_1$
 - 第九章
-  - TODO!!!
+  - 尝试直接写 $\theta$-scheme 时间离散格式，跳过课件中的 backward Euler scheme 离散格式
+  - mixed boundary condition
+  - mixed boundary condition in normal/tangential directions
