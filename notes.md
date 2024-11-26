@@ -1204,36 +1204,274 @@ $$
 \end{aligned}
 $$
 
-## 8.4 
+## 8.4 Another format of full discretization
+
+We consider the full discretization (without considering the Dirichlet boundary condition, which will be handled later): for $m=0,...,M_m-1$ , find $\boldsymbol{u}_h^{m+1} \in [U_h]^2$ and $p_h^{m+1}$ in $W_h$ such that
+$$
+\begin{aligned}
+&\left( \frac{\boldsymbol{u}_{h}^{m+1}-\boldsymbol{u}_{h}^{m}}{\Delta t},\boldsymbol{v} \right) +\theta a\left( \boldsymbol{u}_{h}^{m+1},\boldsymbol{v}_h \right) +\left( 1-\theta \right) a\left( \boldsymbol{u}_{h}^{m},\boldsymbol{v}_h \right) 
+\\
+&+\theta b\left( \boldsymbol{v}_h,p_{h}^{m+1} \right) +\left( 1-\theta \right) b\left( \boldsymbol{v}_h,p_{h}^{m} \right) 
+\\
+&=\theta \left( \boldsymbol{f}\left( t_{m+1} \right) ,\boldsymbol{v}_h \right) +\left( 1-\theta \right) \left( \boldsymbol{f}\left( t_m \right) ,\boldsymbol{v}_h \right) ,
+\\
+&\theta b\left( \boldsymbol{u}_{h}^{m+1},q_h \right) +\left( 1-\theta \right) b\left( \boldsymbol{u}_{h}^{m},q_h \right) =0
+\end{aligned}
+$$
+
+## 8.5 Unsteady linear elasticity equation
+
+Consider
+$$
+\begin{cases}
+	\boldsymbol{u}_{tt}-\nabla \cdot \mathbf{\sigma }\left( \boldsymbol{u} \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega \times \left[ 0,T \right]\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \partial \Omega \times \left[ 0,T \right]\\
+	\boldsymbol{u}=\boldsymbol{u}_0, \frac{\partial \boldsymbol{u}}{\partial t}=\boldsymbol{u}_{00}\,\,\mathrm{at}\ t=0\ \mathrm{and}\ \mathrm{in}\ \Omega\\
+\end{cases}
+$$
+
+Define the basic mass matrix
+$$
+M_e=\left[ m_{ij} \right] _{i,j=1}^{N_b}=\left[ \int_{\Omega}{\phi _j\phi _i\,\,\mathrm{d}x\mathrm{d}y} \right] _{i,j=1}^{N_b}
+$$
+
+$\mathbb{O}_3=\left[ 0 \right] _{i=1,j=1}^{N_{b},N_{b}}$ whose size is $N_{b}\times N_{b}$ , then the block mass matrix is 
+$$
+M=\left[ \begin{matrix}
+	M_e&		\mathbb{O} _3\\
+	\mathbb{O} _{3}^{T}&		M_e\\
+\end{matrix} \right] 
+$$
+
+Consider the centered finite difference scheme for the system of ODEs:
+$$
+M\vec{X}''\left( t \right) +A\vec{X}\left( t \right) =\vec{b}\left( t \right) 
+$$
+
+Then the centered finite difference scheme is
+$$
+\begin{aligned}
+&M\frac{\vec{X}^{m+1}-2\vec{X}^m+\vec{X}^{m-1}}{\Delta t^2}+A\frac{\vec{X}^{m+1}+2\vec{X}^m+\vec{X}^{m-1}}{4}
+\\
+=&\vec{b}\left( t_m \right) ,\ m=1,...,M_m
+\end{aligned}
+$$
+
+Iteration scheme 2:
+$$
+\bar{A}\vec{X}^{m+1}=\bar{\vec{b}}^{m+1},\ m=1,...,M_m
+$$
+
+where
+$$
+\begin{aligned}
+&\bar{A}=\frac{M}{\Delta t^2}+\frac{A}{4}
+\\
+&\bar{\vec{b}}^{m+1}=\vec{b}\left( t_m \right) +\left[ \frac{2M}{\Delta t^2}-\frac{A}{2} \right] \vec{X}^m-\left[ \frac{M}{\Delta t^2}+\frac{A}{4} \right] \vec{X}^{m-1}
+\end{aligned}
+$$
 
 # Chapter 9: Finite elements for 2D unsteady Navier-Stokes equations
 
+## 9.1 Weak formulation
+
+Consider the 2D unsteady Navier-Stokes equation
+$$
+\begin{cases}
+	\boldsymbol{u}_t+\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}-\nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega \times \left[ 0,T \right]\\
+	\nabla \cdot \boldsymbol{u}=0\ \mathrm{in}\ \Omega \times \left[ 0,T \right]\\
+	\boldsymbol{u}=\boldsymbol{g}\,\,\mathrm{on}\ \partial \Omega \times \left[ 0,T \right]\\
+	\boldsymbol{u}=\boldsymbol{u}_0, p=p_0, \mathrm{at}\ t=0\ \mathrm{and}\ \mathrm{in}\ \Omega\\
+\end{cases}
+$$
+
+where $\Omega$ is a 2D domain, $[0,T]$ is the time interval, $\boldsymbol{f}(x,y,t)$ is a given function on $\Omega\times[0,T]$ , $\boldsymbol{g}(x,y,t)$ is a given function on $\partial\Omega\times[0,T]$ , $\boldsymbol{u}_0(x,y)$ and $p_0(x,y)$ are given functions on $\Omega$ at $t=0$ , $\boldsymbol{u}(x,y,t)$ and $p(x,y,t)$ are the unknown functions, and
+$$
+\boldsymbol{u}\left( x,y,t \right) =\left( u_1,u_2 \right) ^T,\boldsymbol{g}\left( x,y,t \right) =\left( g_1,g_2 \right) ^T,\\
+\boldsymbol{f}\left( x,y,t \right) =\left( f_1,f_2 \right) ^T,
+\boldsymbol{u}_0\left( x,y \right) =\left( u_{10},u_{20} \right) ^T,
+$$
+
+Weak formulation
+$$
+\begin{aligned}
+	&\int_{\Omega}{\boldsymbol{u}_t\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{2\nu \mathbb{D} \left( \boldsymbol{u} \right) :\mathbb{D} \left( \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}\\
+	&-\int_{\Omega}{p\left( \nabla \cdot \boldsymbol{v} \right) \,\,\mathrm{d}x\mathrm{d}y}-\int_{\partial \Omega}{\left( \mathbb{T} \left( \boldsymbol{u},p \right) \boldsymbol{n} \right) \cdot \boldsymbol{v}\,\,\mathrm{d}s}=\int_{\Omega}{\boldsymbol{f}\cdot \boldsymbol{v}\,\,\mathrm{d}x\mathrm{d}y,}\\
+	&-\int_{\Omega}{\left( \nabla \cdot \boldsymbol{u} \right) q\,\,\mathrm{d}x\mathrm{d}y}=0\\
+\end{aligned}
+$$
+
+## 9.2 Discretization formulation
+
+Semi-discretization
+$$
+\begin{aligned}
+\left( \boldsymbol{u}_{h_t},\boldsymbol{v}_h \right) +c\left( \boldsymbol{u}_h,\boldsymbol{u}_h,\boldsymbol{v}_h \right) +a\left( \boldsymbol{u}_h,\boldsymbol{v}_h \right) +b\left( \boldsymbol{v}_h,p_h \right) &=\left( \boldsymbol{f},\boldsymbol{v}_h \right) 
+\\
+b\left( \boldsymbol{u}_h,q_h \right) &=0
+\end{aligned}
+$$
+
+Full discretization
+$$
+\left( \frac{\boldsymbol{u}_{h}^{m+1,\left( l \right)}-\boldsymbol{u}_{h}^{m}}{\Delta t},\boldsymbol{v}_h \right) 
+\\
++\theta \left[ c\left( \boldsymbol{u}_{h}^{m+1,\left( l \right)},\boldsymbol{u}_{h}^{m+1,\left( l-1 \right)},\boldsymbol{v}_h \right) +c\left( \boldsymbol{u}_{h}^{m+1,\left( l-1 \right)},\boldsymbol{u}_{h}^{m+1,\left( l \right)},\boldsymbol{v}_h \right) \right] 
+\\
+-\theta c\left( \boldsymbol{u}_{h}^{m+1,\left( l-1 \right)},\boldsymbol{u}_{h}^{m+1,\left( l-1 \right)},\boldsymbol{v}_h \right) +\left( 1-\theta \right) c\left( \boldsymbol{u}_{h}^{m},\boldsymbol{u}_{h}^{m},\boldsymbol{v}_h \right) 
+\\
++\theta a\left( \boldsymbol{u}_{h}^{m+1,\left( l \right)},\boldsymbol{v}_h \right) +\left( 1-\theta \right) a\left( \boldsymbol{u}_{h}^{m},\boldsymbol{v}_h \right) 
+\\
++\theta b\left( \boldsymbol{v}_h,p_{h}^{m+1,\left( l \right)} \right) +\left( 1-\theta \right) \theta b\left( \boldsymbol{v}_h,p_{h}^{m} \right) 
+\\
+=\theta \left( \boldsymbol{f}\left( t_{m+1} \right) ,\boldsymbol{v}_h \right) +\left( 1-\theta \right) \left( \boldsymbol{f}\left( t_m \right) ,\boldsymbol{v}_h \right) 
+\\
+\theta b\left( \boldsymbol{u}_{h}^{m+1,\left( l \right)},q_h \right) +\left( 1-\theta \right) b\left( \boldsymbol{u}_{h}^{m},q_h \right) =0
+$$
+
+Full discretization in scalar formulation
+$$
+\int_{\Omega}{\frac{u_{1h}^{m+1,\left( l \right)}-u_{1h}^{m}}{\Delta t}v_{1h}\mathrm{d}x\mathrm{d}y}+\int_{\Omega}{\frac{u_{2h}^{m+1,\left( l \right)}-u_{2h}^{m}}{\Delta t}v_{2h}\mathrm{d}x\mathrm{d}y}
+\\
++\theta \int_{\Omega}{\left( u_{1h}^{m+1,\left( l \right)}\frac{\partial u_{1h}^{m+1,\left( l-1 \right)}}{\partial x}v_{1h}+u_{2h}^{m+1,\left( l \right)}\frac{\partial u_{1h}^{m+1,\left( l-1 \right)}}{\partial y}v_{1h}+u_{1h}^{m+1,\left( l \right)}\frac{\partial u_{2h}^{m+1,\left( l-1 \right)}}{\partial x}v_{2h}+u_{2h}^{m+1,\left( l \right)}\frac{\partial u_{2h}^{m+1,\left( l-1 \right)}}{\partial y}v_{2h} \right) \,\,\mathrm{d}x\mathrm{d}y}
+\\
++\theta \int_{\Omega}{\left( u_{1h}^{m+1,\left( l-1 \right)}\frac{\partial u_{1h}^{m+1,\left( l \right)}}{\partial x}v_{1h}+u_{2h}^{m+1,\left( l-1 \right)}\frac{\partial u_{1h}^{m+1,\left( l \right)}}{\partial y}v_{1h}+u_{1h}^{m+1,\left( l-1 \right)}\frac{\partial u_{2h}^{m+1,\left( l \right)}}{\partial x}v_{2h}+u_{2h}^{m+1,\left( l-1 \right)}\frac{\partial u_{2h}^{m+1,\left( l \right)}}{\partial y}v_{2h} \right) \,\,\mathrm{d}x\mathrm{d}y}
+\\
+-\theta \int_{\Omega}{\left( u_{1h}^{m+1,\left( l-1 \right)}\frac{\partial u_{1h}^{m+1,\left( l-1 \right)}}{\partial x}v_{1h}+u_{2h}^{m+1,\left( l-1 \right)}\frac{\partial u_{1h}^{m+1,\left( l-1 \right)}}{\partial y}v_{1h}+u_{1h}^{m+1,\left( l-1 \right)}\frac{\partial u_{2h}^{m+1,\left( l-1 \right)}}{\partial x}v_{2h}+u_{2h}^{m+1,\left( l-1 \right)}\frac{\partial u_{2h}^{m+1,\left( l-1 \right)}}{\partial y}v_{2h} \right) \,\,\mathrm{d}x\mathrm{d}y}
+\\
++\left( 1-\theta \right) \int_{\Omega}{\left( u_{1h}^{m}\frac{\partial u_{1h}^{m}}{\partial x}v_{1h}+u_{2h}^{m}\frac{\partial u_{1h}^{m}}{\partial y}v_{1h}+u_{1h}^{m}\frac{\partial u_{2h}^{m}}{\partial x}v_{2h}+u_{2h}^{m}\frac{\partial u_{2h}^{m}}{\partial y}v_{2h} \right) \,\,\mathrm{d}x\mathrm{d}y}
+\\
++\theta \int_{\Omega}{\nu \left( 2\frac{\partial u_{1h}^{m+1,\left( l \right)}}{\partial x}\frac{\partial v_{1h}}{\partial x}+2\frac{\partial u_{2h}^{m+1,\left( l \right)}}{\partial y}\frac{\partial v_{2h}}{\partial y}+\frac{\partial u_{1h}^{m+1,\left( l \right)}}{\partial y}\frac{\partial v_{1h}}{\partial y}+\frac{\partial u_{1h}^{m+1,\left( l \right)}}{\partial y}\frac{\partial v_{2h}}{\partial x}+\frac{\partial u_{2h}^{m+1,\left( l \right)}}{\partial x}\frac{\partial v_{1h}}{\partial y}+\frac{\partial u_{2h}^{m+1,\left( l \right)}}{\partial x}\frac{\partial v_{2h}}{\partial x} \right) \,\mathrm{d}x\mathrm{d}y}
+\\
++\left( 1-\theta \right) \int_{\Omega}{\nu \left( 2\frac{\partial u_{1h}^{m}}{\partial x}\frac{\partial v_{1h}}{\partial x}+2\frac{\partial u_{2h}^{m}}{\partial y}\frac{\partial v_{2h}}{\partial y}+\frac{\partial u_{1h}^{m}}{\partial y}\frac{\partial v_{1h}}{\partial y}+\frac{\partial u_{1h}^{m}}{\partial y}\frac{\partial v_{2h}}{\partial x}+\frac{\partial u_{2h}^{m}}{\partial x}\frac{\partial v_{1h}}{\partial y}+\frac{\partial u_{2h}^{m}}{\partial x}\frac{\partial v_{2h}}{\partial x} \right) \,\mathrm{d}x\mathrm{d}y}
+\\
+-\theta \int_{\Omega}{\left( \frac{\partial v_{1h}}{\partial x}p_{h}^{m+1,\left( l \right)}+\frac{\partial v_{2h}}{\partial y}p_{h}^{m+1,\left( l \right)} \right) \mathrm{d}x\mathrm{d}y}-\left( 1-\theta \right) \int_{\Omega}{\left( \frac{\partial v_{1h}}{\partial x}p_{h}^{m}+\frac{\partial v_{2h}}{\partial y}p_{h}^{m} \right) \mathrm{d}x\mathrm{d}y}
+\\
+=\theta \int_{\Omega}{\left( f_1\left( t_{m+1} \right) v_{1h}+f_2\left( t_{m+1} \right) v_{2h} \right) \mathrm{d}x\mathrm{d}y}+\left( 1-\theta \right) \int_{\Omega}{\left( f_1\left( t_m \right) v_{1h}+f_2\left( t_m \right) v_{2h} \right) \mathrm{d}x\mathrm{d}y}
+\\
+-\theta \int_{\Omega}{\left( \frac{\partial u_{1h}^{m+1,\left( l \right)}}{\partial x}q_h+\frac{\partial u_{2h}^{m+1,\left( l \right)}}{\partial y}q_h \right) \mathrm{d}x\mathrm{d}y}-\left( 1-\theta \right) \int_{\Omega}{\left( \frac{\partial u_{1h}^{m}}{\partial x}q_h+\frac{\partial u_{2h}^{m}}{\partial y}q_h \right) \mathrm{d}x\mathrm{d}y}=0
+$$
+
+## 9.3 Matrix formulation
+
+$$
+\left( \frac{M}{\Delta t}+\theta A+\theta AN^{m+1} \right) X^{m+1,\left( l \right)}=\theta b\left( t_{m+1} \right) +\left( 1-\theta \right) b\left( t_m \right) +\theta \overrightarrow{bN^{m+1}}-\left( 1-\theta \right) \overrightarrow{bN^m}+\left[ \frac{M}{\Delta t}-\left( 1-\theta \right) A \right] X^m
+$$
+
+Main pseudo code:
+- Generate the mesh information matrices P and T
+- Assemble the mass matrix M and stiffness matrix A
+- Generate the initial vector $\vec{X}^0$
+- Iterate in time: $FOR\ m=0,...,M_m-1$
+  - $t_{m+1}=(m+1) \Delta t$
+  - Assemble the load vector $b(t_{m+1})$
+  - Newton iteration: $FOR\ l=1,2,...,L$
+    - Assemble the matrix $AN$
+    - Assemble the vector $bN$
+    - $A^{m+1,(l)}$ and $\vec{b}^{m+1,(l)}$
+    - Treat Dirichlet boundary condition
+    - Solve $A^{m+1,(l)}\vec{X}^{m+1,(l)}=\vec{b}^{m+1,(l)}$
+  - $END$
+  - Let $\vec{X}^{m+1}$ be the final $\vec{X}^{m+1,(l)}$ from the Newton's iteration
+- $END$
+
+## 9.4 Numerical example
+
+Example 1: On the domain $\Omega = [0, 1]\times[−0.25, 0]$, consider
+the time-dependent Navier-Stokes equation
+$$
+\begin{aligned}
+&\boldsymbol{u}_t+\left( \boldsymbol{u}\cdot \nabla \right) \boldsymbol{u}-\nabla \cdot \mathbb{T} \left( \boldsymbol{u},p \right) =\boldsymbol{f}\,\,\mathrm{in}\ \Omega \times \left[ 0,T \right] 
+\\
+&\nabla \cdot \boldsymbol{u}=0\ \mathrm{in}\ \Omega \times \left[ 0,T \right] 
+\\
+&u_1=x^2y^2+e^{-y},\ \mathrm{at}\ t=0\ \mathrm{and}\ \mathrm{in}\ \Omega 
+\\
+&u_2=-\frac{2}{3}xy^3+2-\pi \sin \left( \pi x \right) ,\ \mathrm{at}\ t=0\ \mathrm{and}\ \mathrm{in}\ \Omega 
+\\
+&p=-\left[ 2-\pi \sin \left( \pi x \right) \right] \cos \left( 2\pi y \right),\ \mathrm{at}\ t=0\ \mathrm{and}\ \mathrm{in}\ \Omega
+\end{aligned}
+$$
+
+Continued formulation:
+$$
+\begin{aligned}
+&u_1=e^{-y}\cos \left( 2\pi t \right) \,\,\mathrm{on}\ x=0
+\\
+&u_1=\left( y^2+e^{-y} \right) \cos \left( 2\pi t \right) \,\,\mathrm{on}\ x=1
+\\
+&u_1=\left( \frac{1}{16}x^2+e^{0.25} \right) \cos \left( 2\pi t \right) \,\,\mathrm{on}\ y=-0.25
+\\
+&u_1=\cos \left( 2\pi t \right) \,\,\mathrm{on}\ y=0
+\\
+&u_2=2\cos \left( 2\pi t \right) \,\,\mathrm{on}\ x=0
+\\
+&u_2=\left( -\frac{2}{3}y^3+2 \right) \cos \left( 2\pi t \right) \,\,\mathrm{on}\ x=1
+\\
+&u_2=\left[ \frac{1}{96}x+2-\pi \sin \left( \pi x \right) \right] \cos \left( 2\pi t \right) \,\,\mathrm{on}\ y=-0.25
+\\
+&u_2=\left[ 2-\pi \sin \left( \pi x \right) \right] \cos \left( 2\pi t \right) \,\,\mathrm{on}\ y=0
+\end{aligned}
+$$
+
+Here
+$$
+\begin{aligned}
+f_1=&-2\pi \left( x^2y^2+e^{-y} \right) \sin \left( 2\pi t \right) 
+\\
+&+\left\{ 2xy^2\left( x^2y^2+e^{-y} \right) +\left[ -\frac{2}{3}xy^3+2-\pi \sin \left( \pi x \right) \right] \left( 2yx^2-e^{-y} \right) \right\} \cos ^2\left( 2\pi t \right) 
+\\
+&+\left[ -2\nu x^2-2\nu y^2-\nu e^{-y}+\pi ^2\cos \left( \pi x \right) \cos \left( 2\pi y \right) \right] \cos \left( 2\pi t \right) 
+\\
+f_2=&-2\pi \left[ -\frac{2}{3}xy^3+2-\pi \sin \left( \pi x \right) \right] \sin \left( 2\pi t \right) 
+\\
+&+\left\{ \left( x^2y^2+e^{-y} \right) \left[ -\frac{2}{3}y^3-\pi ^2\cos \left( \pi x \right) \right] -2xy^2\left[ -\frac{2}{3}xy^3+2-\pi \sin \left( \pi x \right) \right] \right\} \cos ^2\left( 2\pi t \right) 
+\\
+&+\left[ 4\nu xy-\nu \pi ^3\sin \left( \pi x \right) +2\pi \left( 2-\pi \sin \left( \pi x \right) \right) \sin \left( 2\pi y \right) \right] \cos \left( 2\pi t \right) 
+\end{aligned}
+$$
+
+The analytic solution of this problem is
+$$
+\begin{aligned}
+&u_1=\left( x^2y^2+e^{-y} \right) \cos \left( 2\pi t \right) 
+\\
+&u_2=\left[ -\frac{2}{3}xy^3+2-\pi \sin \left( \pi x \right) \right] \cos \left( 2\pi t \right) 
+\\
+&p=-\left[ 2-\pi \sin \left( \pi x \right) \right] \cos \left( 2\pi y \right) \cos \left( 2\pi t \right) 
+\end{aligned}
+$$
+
 # 拓展内容整理
 
-- 拓展内容
-	- Crouzeix-Raviart 单元
-	- 三角形单元和四边形单元实现，线性和二次单元，各向异性的拓展
-	- 3D问题
-- 当前任务
-	- 完成第八、九基本内容程序
-	- 补全所有的拓展内容笔记（包括前五章），整理课程笔记
-	- 实现所有的拓展内容程序
-
-- 第一章
 - 第二章
+  - Crouzeix-Raviart 单元
+  - 四边形单元
+  - 3D单元
 - 第三章
+  - mixed boundary conditions
+  - Non-isotropic equation
+  - A more general second order equation
 - 第四章
+  - Mixed boundary conditions
+  - Non-isotropic second order parabolic equation with mixed
+boundary conditions
+  - Second order hyperbolic equation
+  - Non-isotropic second order hyperbolic equation with mixed
+boundary conditions
 - 第五章
+  - stress, robin, dirichlet/stress/robin mixed boundary conditions
+  - stress, robin, dirichlet/stress/robin mixed boundary conditions in normal/tangential directions
 - 第六章
-  - stress, robin, dirichlet/stress/robin mixed boundary condition
-  - stress, robin, dirichlet/stress/robin mixed boundary condition in normal/tangential directions
+  - stress, robin, dirichlet/stress/robin mixed boundary conditions
+  - stress, robin, dirichlet/stress/robin mixed boundary conditions in normal/tangential directions
 - 第七章
-  - stress, robin, dirichlet/stress/robin mixed boundary condition
-  - stress, robin, dirichlet/stress/robin mixed boundary condition in normal/tangential directions
+  - stress, robin, dirichlet/stress/robin mixed boundary conditions
+  - stress, robin, dirichlet/stress/robin mixed boundary conditions in normal/tangential directions
 - 第八章
-  - mixed boundary condition
-  - mixed boundary condition in normal/tangential directions
-    - 非稳态条件下的 stress, robin boundary condition 是否需要在每一个时间迭代步都进行边界条件处理？
+  - mixed boundary conditions
+  - mixed boundary conditions in normal/tangential directions
+    - 非稳态条件下的 stress, robin boundary conditions 是否需要在每一个时间迭代步都进行边界条件处理？
     - 第四章视频下的评论：非稳态问题 $\theta$ 格式的Neumman和Robin边界需要对 $A(t_{m+1})$、$A(t_m)$、$b(t_{m+1})$、$b(t_m)$ 分别处理一遍，否则精度会降低一阶
     - 第四章拓展部分问题，写出完整的弱形式后再进行有限元离散和时间离散，看看到底是不是需要
     - 根据课程视频，如果边界条件与时间相关，需要对 $A(t_{m+1}), A(t_m), b(t_{m+1}), b(t_m)$ 分别处理
@@ -1241,7 +1479,8 @@ $$
   - unsteady linear elasticity equation
     - 给出初始时刻的边界条件一阶时间偏导，如何给出初始的 $X_1$ ？
     - 目前可能的做法是使用中心差分格式 $2\Delta t X_{0}^{\prime} = X_1 - X_{-1}$ 和递推格式 $AX_1=b_1$ 一起求解出 $X_1$
+    - mixed boundary conditions
+    - mixed boundary conditions in normal/tangential directions
 - 第九章
-  - 尝试直接写 $\theta$-scheme 时间离散格式，跳过课件中的 backward Euler scheme 离散格式
-  - mixed boundary condition
-  - mixed boundary condition in normal/tangential directions
+  - mixed boundary conditions
+  - mixed boundary conditions in normal/tangential directions
