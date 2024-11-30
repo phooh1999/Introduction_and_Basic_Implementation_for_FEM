@@ -31,8 +31,8 @@ function generateBoundary(obj,steps,type)
 % boundary_edges(8:9,k): the unit tangential vector at the kth boundary edge. 
 %                       It's counterclockwise to go from the normal vector to the tangential vector.
 
-%% 2D Lagrange linear FE && 2D Lagrange quadratic FE
-if type == 1 || type == 2
+%% 2D Lagrange linear FE && 2D Lagrange quadratic FE && 2D Crouzeix Raviart FE
+if type == 1 || type == 2 || type == 3
     xMeshStep = steps.x;
     yMeshStep = steps.y;
     
@@ -51,39 +51,67 @@ if type == 1 || type == 2
     obj.nodes(:,1) = -1;
     obj.nodes(:,2) = -1;
     
-    % left node
-    for i = 1 : yEleStep
-        obj.nodes(i,3) = i;
-        obj.nodes(i,4:5) = [-1,0];
+    if type == 1 || type == 2
+        % left node
+        for i = 1 : yEleStep
+            obj.nodes(i,3) = i;
+            obj.nodes(i,4:5) = [-1,0];
+        end
+
+        % top node
+        for i = yEleStep + 1 : (xEleStep + yEleStep)
+            obj.nodes(i,3) = (i - yEleStep) * (yEleStep + 1);
+            obj.nodes(i,4:5) = [0,1];
+        end
+
+        % right node
+        for i = (xEleStep + yEleStep + 1) : (xEleStep + 2*yEleStep)
+            obj.nodes(i,3) = (yEleStep + 1) * xEleStep + (i - xEleStep - yEleStep + 1);
+            obj.nodes(i,4:5) = [1,0];
+        end
+
+        % bottom node
+        for i = (xEleStep + 2*yEleStep + 1) : 2*(xEleStep + yEleStep)
+            obj.nodes(i,3) = (i - xEleStep - 2*yEleStep) * (yEleStep + 1) + 1;
+            obj.nodes(i,4:5) = [0,-1];
+        end
+
+        % Correct the normal direction at the four corners.
+        % left-bottom
+        obj.nodes(1,4:5) = [-1,-1]/sqrt(2);
+        % left-top
+        obj.nodes(yEleStep + 1,4:5) = [-1,1]/sqrt(2);
+        % right-top
+        obj.nodes(xEleStep + 2*yEleStep,4:5) = [1,1]/sqrt(2);
+        % right-bottom
+        obj.nodes(2*(xEleStep + yEleStep),4:5) = [1,-1]/sqrt(2);
     end
     
-    % top node
-    for i = yEleStep + 1 : (xEleStep + yEleStep)
-        obj.nodes(i,3) = (i - yEleStep) * (yEleStep + 1);
-        obj.nodes(i,4:5) = [0,1];
+    if type == 3
+        % left node
+        for i = 1 : yEleStep
+            obj.nodes(i,3) = i;
+            obj.nodes(i,4:5) = [-1,0];
+        end
+
+        % top node
+        for i = yEleStep + 1 : xEleStep + yEleStep
+            obj.nodes(i,3) = (i - yEleStep) * (3*yEleStep + 1);
+            obj.nodes(i,4:5) = [0,1];
+        end
+
+        % right node
+        for i = (xEleStep + yEleStep + 1) : (xEleStep + 2*yEleStep)
+            obj.nodes(i,3) = xEleStep*(3*yEleStep + 1) + (i - xEleStep - yEleStep);
+            obj.nodes(i,4:5) = [1,0];
+        end
+
+        % bottom node
+        for i = (xEleStep + 2*yEleStep + 1) : 2*(xEleStep + yEleStep)
+            obj.nodes(i,3) = yEleStep + 1 + (i-xEleStep-2*yEleStep-1)*(3*yEleStep + 1);
+            obj.nodes(i,4:5) = [0,-1];
+        end
     end
-    
-    % right node
-    for i = (xEleStep + yEleStep + 1) : (xEleStep + 2*yEleStep)
-        obj.nodes(i,3) = (yEleStep + 1) * xEleStep + (i - xEleStep - yEleStep + 1);
-        obj.nodes(i,4:5) = [1,0];
-    end
-    
-    % bottom node
-    for i = (xEleStep + 2*yEleStep + 1) : 2*(xEleStep + yEleStep)
-        obj.nodes(i,3) = (i - xEleStep - 2*yEleStep) * (yEleStep + 1) + 1;
-        obj.nodes(i,4:5) = [0,-1];
-    end
-    
-    % Correct the normal direction at the four corners.
-    % left-bottom
-    obj.nodes(1,4:5) = [-1,-1]/sqrt(2);
-    % left-top
-    obj.nodes(yEleStep + 1,4:5) = [-1,1]/sqrt(2);
-    % right-top
-    obj.nodes(xEleStep + 2*yEleStep,4:5) = [1,1]/sqrt(2);
-    % right-bottom
-    obj.nodes(2*(xEleStep + yEleStep),4:5) = [1,-1]/sqrt(2);
     
     %It's counterclockwise to go from the normal vector n to the tangential vector \tau.
     %Hence \tau_1=-n_2, \tau_2=n_1.

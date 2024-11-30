@@ -15,6 +15,11 @@ if type == 2
     obj.refBasisFun = @lagrangeQuadratic2D;
 end
 
+if type == 3
+    obj.numBasis = 3;
+    obj.refBasisFun = @CrouzeixRaviart2D;
+end
+
 end
 
 function f = constant2D(~,~,orderX,orderY)
@@ -105,6 +110,24 @@ elseif orderX==1&&orderY==1
          -4
         ];
       
+end
+
+end
+
+function f = CrouzeixRaviart2D(x,y,orderX,orderY)
+
+if orderX == 0 && orderY == 0
+    
+    f = [1-2*y; 2*x+2*y-1; 1-2*x];
+
+elseif orderX == 1 && orderY == 0
+    
+    f = [0; 2; -2];
+
+elseif orderX == 0 && orderY == 1
+    
+    f = [-2; 2; 0];
+        
 end
 
 end

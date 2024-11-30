@@ -15,8 +15,8 @@ partitionSteps.x = step;
 partitionSteps.y = step;
 
 % basis function type
-trialBasisType = 2;
-testBasisType = 2;
+trialBasisType = 3; % bad result using c-r element...why?
+testBasisType = 3;
 
 % number of gauss quadrature points
 gaussPoints2D = 9;

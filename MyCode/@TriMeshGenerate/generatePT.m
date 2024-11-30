@@ -1,6 +1,7 @@
 function generatePT(obj, domain, steps, type)
 % 1: 2D Lagrange linear FE
 % 2: 2D Lagrange quadratic FE
+% 3: 2D Crouzeix Raviart FE
 
 %% 2D Lagrange linear FE
 if type == 1
@@ -76,6 +77,49 @@ if type == 2
     
     obj.P = obj.P';
     obj.T = obj.T';
+    return
+end
+
+%% 2D Crouzeix Raviart FE
+
+if type == 3
+    N1 = steps.x;        N2 = steps.y;
+    x0 = domain.x(1);    x1 = domain.x(2);
+    y0 = domain.y(1);    y1 = domain.y(2);
+    dx = (x1-x0)/N1;     dy = (y1-y0)/N2;
+    
+    number_of_nodes = N2*(N1+1) + N1*(2*N2+1);
+    number_of_elements = 2*N1*N2;
+    
+    obj.P = zeros(number_of_nodes,2);
+    obj.T = zeros(number_of_elements,3);
+    
+    for i = 0 : N1
+        for j = 1 : N2
+            obj.P(i*(3*N2+1)+j,1) = x0 + i*dx;
+            obj.P(i*(3*N2+1)+j,2) = y0 + (j-1/2)*dy;
+        end
+    end
+    
+    for i = 1 : N1
+        for k = 1 : (2*N2+1)
+            obj.P((3*i-2)*N2+i-1+k,1) = x0 + (i-1/2)*dx;
+            obj.P((3*i-2)*N2+i-1+k,2) = y0 + (k-1)*1/2*dy;
+        end
+    end
+    
+    for i = 1 : N1
+        for j = 1 : N2
+            obj.T((i-1)*2*N2+2*j-1,1) = (i-1)*(3*N2+1) + N2 + 2*j - 1;
+            obj.T((i-1)*2*N2+2*j-1,2) = (i-1)*(3*N2+1) + N2 + 2*j;
+            obj.T((i-1)*2*N2+2*j-1,3) = (i-1)*(3*N2+1) + j;
+            
+            obj.T((i-1)*2*N2+2*j,1) = (i-1)*(3*N2+1) + N2 + 2*j;
+            obj.T((i-1)*2*N2+2*j,2) = i*(3*N2+1) + j;
+            obj.T((i-1)*2*N2+2*j,3) = (i-1)*(3*N2+1) + N2 + 2*j + 1;
+        end
+    end
+    
     return
 end
 
